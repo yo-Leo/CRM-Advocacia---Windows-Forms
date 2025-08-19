@@ -16,8 +16,19 @@ namespace CRM_Advocacia___Windows_Forms
 
 /*
  
- create database crm_advocacia;
+create database crm_advocacia;
 use crm_advocacia;
+
+create table Usuario (
+
+    id_usuario bigint primary key auto_increment,
+    nome_usuario varchar(100) unique not null,
+    senha varchar(255) not null,
+    nivel_acesso enum('Baixo','Medio','Alto') not null default 'Baixo',
+    ativo bool default true,
+    data_criacao datetime not null default current_timestamp
+    
+);
 
 create table Cliente (
 
@@ -88,6 +99,7 @@ create table Documento (
 );
 
 create table Honorario (
+
     id_honorario bigint primary key auto_increment,
     id_processo bigint not null,
     descricao varchar(200),
@@ -95,6 +107,7 @@ create table Honorario (
     data_emissao date not null,
     pago bool default false,
     foreign key (id_processo) references Processo(id_processo)
+    
 );
 
 create table Advogado (
@@ -119,7 +132,5 @@ create table Processo_Advogado (
     foreign key (id_advogado) references Advogado(id_advogado)
     
 );
-
--- drop database crm_advocacia;
  
  */
