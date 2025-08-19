@@ -26,8 +26,9 @@ create table Usuario (
     senha varchar(255) not null,
     nivel_acesso enum('Baixo','Medio','Alto') not null default 'Baixo',
     ativo bool default true,
-    data_criacao datetime not null default current_timestamp
-    
+    data_criacao datetime not null default current_timestamp,
+    foto longblob
+
 );
 
 create table Cliente (
@@ -40,7 +41,7 @@ create table Cliente (
     email varchar(100),
     descricao text,
     contato_em datetime not null default current_timestamp
-    
+
 );
 
 create table Endereco (
@@ -56,7 +57,7 @@ create table Endereco (
     cep varchar(15),
     tipo enum('Residencial','Comercial','Outro') default 'Residencial',
     foreign key (id_cliente) references Cliente(id_cliente)
-    
+
 );
 
 create table Processo (
@@ -72,7 +73,7 @@ create table Processo (
     status_processo enum('Ativo','Suspenso','Encerrado') not null default 'Ativo',
     data_inicio datetime not null default current_timestamp,
     foreign key (id_cliente) references Cliente(id_cliente)
-    
+
 );
 
 create table Prazo (
@@ -84,7 +85,7 @@ create table Prazo (
     cumprido bool default false,
     observacao varchar(200),
     foreign key (id_processo) references Processo(id_processo)
-    
+
 );
 
 create table Documento (
@@ -92,10 +93,10 @@ create table Documento (
     id_documento bigint primary key auto_increment,
     id_processo bigint not null,
     titulo varchar(100) not null,
-    caminho_arquivo varchar(255) not null, -- caminho do arquivo no servidor/local
     data_upload datetime default current_timestamp,
+    arquivo longblob,  -- arquivo do documento armazenado no banco
     foreign key (id_processo) references Processo(id_processo)
-    
+
 );
 
 create table Honorario (
@@ -107,7 +108,7 @@ create table Honorario (
     data_emissao date not null,
     pago bool default false,
     foreign key (id_processo) references Processo(id_processo)
-    
+
 );
 
 create table Advogado (
@@ -118,8 +119,9 @@ create table Advogado (
     especialidade enum('Trabalhista','Cível','Criminal','Tributário','Família','Outros') not null,
     telefone varchar(30),
     email varchar(100),
-    ativo bool default true
-    
+    ativo bool default true,
+    foto longblob
+
 );
 
 create table Processo_Advogado (
@@ -130,7 +132,8 @@ create table Processo_Advogado (
     primary key (id_processo, id_advogado),
     foreign key (id_processo) references Processo(id_processo),
     foreign key (id_advogado) references Advogado(id_advogado)
-    
+
 );
+
  
  */

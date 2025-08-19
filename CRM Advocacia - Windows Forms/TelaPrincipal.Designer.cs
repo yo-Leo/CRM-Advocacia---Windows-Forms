@@ -50,7 +50,7 @@
             tbTelaPrincipal.BackColor = SystemColors.Control;
             tbTelaPrincipal.BorderStyle = BorderStyle.None;
             tbTelaPrincipal.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            tbTelaPrincipal.Location = new Point(53, 225);
+            tbTelaPrincipal.Location = new Point(13, 25);
             tbTelaPrincipal.Margin = new Padding(4, 5, 4, 5);
             tbTelaPrincipal.Name = "tbTelaPrincipal";
             tbTelaPrincipal.Size = new Size(177, 38);
@@ -61,11 +61,14 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1898, 952);
+            ClientSize = new Size(1918, 964);
             Controls.Add(tbTelaPrincipal);
             Controls.Add(picLogo);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4, 5, 4, 5);
+            MaximizeBox = false;
             Name = "TelaPrincipal";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "CRM - LegalMind";
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
