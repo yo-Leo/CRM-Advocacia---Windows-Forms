@@ -9,6 +9,5 @@ namespace CRM_Advocacia___Windows_Forms
             InitializeComponent();
 
         }
-
     }
 }
