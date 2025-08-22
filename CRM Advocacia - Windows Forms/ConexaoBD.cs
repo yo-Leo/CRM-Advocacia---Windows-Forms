@@ -1,49 +1,65 @@
-﻿using MySql.Data.MySqlClient;
+﻿using System;
+using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace CRM_Advocacia___Windows_Forms
 {
     public class ConexaoBD
     {
+        private string conexao = "server=localhost;database=crm_advocacia;uid=root;pwd=;";
+        private MySqlConnection GetConnection()
+        {
+            return new MySqlConnection(conexao);
+        }
 
+        public void AdicionarCliente(string nome, string cpfCnpj, string tipo, string telefone, string email, string descricao, DateTime data)
+        {
+            try
+            {
+                using (var conn = GetConnection())
+                {
+                    conn.Open();
+
+                    string sql = @"INSERT INTO Cliente 
+                          (nome_razao, cpf_cnpj, tipo, telefone, email, descricao, contato_em) 
+                          VALUES (@nome, @cpfCnpj, @tipo, @telefone, @email, @descricao, @data);";
 
                     using (var cmd = new MySqlCommand(sql, conn))
                     {
-                        conn.Open();
-                        cmd.Parameters.AddWithValue("@numero", numero);
-                        cmd.Parameters.AddWithValue("@titulo", titulo);
-                        cmd.Parameters.AddWithValue("@idCliente", idCliente);
-                        cmd.Parameters.AddWithValue("@area", area);
+                        cmd.Parameters.AddWithValue("@nome", nome);
+                        cmd.Parameters.AddWithValue("@cpfCnpj", cpfCnpj);
+                        cmd.Parameters.AddWithValue("@tipo", tipo);
+                        cmd.Parameters.AddWithValue("@telefone", telefone);
+                        cmd.Parameters.AddWithValue("@email", email);
                         cmd.Parameters.AddWithValue("@descricao", descricao);
-                        cmd.Parameters.AddWithValue("@valor", valor);
-                        cmd.Parameters.AddWithValue("@fase", fase); 
-                        cmd.Parameters.AddWithValue("@status", status);
+                        cmd.Parameters.AddWithValue("@data", data);
 
                         cmd.ExecuteNonQuery();
-                        MessageBox.Show("Processo criado com sucesso!");
+                        MessageBox.Show("Cliente cadastrado com sucesso!");
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao criar processo: " + ex.Message);
+                MessageBox.Show("Erro ao cadastrar cliente: " + ex.Message);
             }
         }
 
-        //Adicionando prazo
+        // ================== PROCESSO ==================
         public void AdicionarPrazo(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
         {
             try
             {
-                using (var conn = new MySqlConnection(conexao))
+                using (var conn = GetConnection())
                 {
                     conn.Open();
 
-                    string sql = @"INSERT INTO Processo (numero, titulo, id_cliente, area_direito, descricao, valor, fase, status_processo)
-                         VALUES (@numero, @titulo, @idCliente, @area, @descricao, @valor, @fase, @status); SELECT LAST_INSERT_ID();";
+                    string sql = @"INSERT INTO Processo 
+                                  (numero, titulo, id_cliente, area_direito, descricao, valor, fase, status_processo)
+                                  VALUES (@numero, @titulo, @idCliente, @area, @descricao, @valor, @fase, @status);";
 
                     using (var cmd = new MySqlCommand(sql, conn))
                     {
-                        conn.Open();
                         cmd.Parameters.AddWithValue("@numero", numero);
                         cmd.Parameters.AddWithValue("@titulo", titulo);
                         cmd.Parameters.AddWithValue("@idCliente", idCliente);
@@ -64,22 +80,32 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
-        public void remover()
+        // ================== OUTROS MÉTODOS ==================
+        public void Remover(string tabela, string coluna, object valor)
         {
-          
-        }
+           
 
-        public void atualizar()
-        {
 
         }
 
-        public void buscar()
+        public void Atualizar(string tabela, string colunaAlvo, object novoValor, string colunaFiltro, object valorFiltro)
         {
+            
+
+
+        }
+
+        public void Buscar(string tabela, string coluna, object valor)
+        {
+            
+
 
         }
     }
 }
+
+
+
 
 
 
