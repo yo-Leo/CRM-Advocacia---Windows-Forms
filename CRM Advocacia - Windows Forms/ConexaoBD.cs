@@ -1,35 +1,178 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MySql.Data.MySqlClient;
 
 namespace CRM_Advocacia___Windows_Forms
 {
     public class ConexaoBD
     {
+        //Conexão com o BD
+        string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=Leozin.2168;";
 
+        //Adcionando cliente
+        public void AdicionarCliente(string nome, string cpfCnpj, string tipo, string telefone, string email, string descricao, string data)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(conexao))
+                {
+                    conn.Open();
 
+                    string sql = @"INSERT INTO Cliente 
+                          (nome_razao, cpf_cnpj, tipo, telefone, email, descricao, contato_em) 
+                          VALUES (@nome, @cpfCnpj, @tipo, @telefone, @email, @descricao, @data);";
 
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nome", nome);
+                        cmd.Parameters.AddWithValue("@cpfCnpj", cpfCnpj);
+                        cmd.Parameters.AddWithValue("@tipo", tipo);
+                        cmd.Parameters.AddWithValue("@telefone", telefone);
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@descricao", descricao);
+                        cmd.Parameters.AddWithValue("@data", data);
+
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Cliente cadastrado com sucesso!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao cadastrar cliente: " + ex.Message);
+            }
+        }
+
+        //Adicionando endereço
+        public void AdicionarEndereco(int idCliente, string logradouro, string numero, string complemento, string bairro, string cidade, string estado, string cep, string tipo)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(conexao))
+                {
+                    conn.Open();
+
+                    string sql = @"INSERT INTO Endereco (id_cliente, logradouro, numero, complemento, bairro, cidade, estado, cep, tipo)
+                         VALUES (@idCliente, @logradouro, @numero, @complemento, @bairro, @cidade, @estado, @cep, @tipo); SELECT LAST_INSERT_ID();";
+
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@idCliente", idCliente);
+                        cmd.Parameters.AddWithValue("@logradouro", logradouro);
+                        cmd.Parameters.AddWithValue("@numero", numero);
+                        cmd.Parameters.AddWithValue("@complemento", complemento);
+                        cmd.Parameters.AddWithValue("@bairro", bairro);
+                        cmd.Parameters.AddWithValue("@cidade", cidade);
+                        cmd.Parameters.AddWithValue("@estado", estado);
+                        cmd.Parameters.AddWithValue("@cep", cep);
+                        cmd.Parameters.AddWithValue("@tipo", tipo);
+
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Endereço cadastrado com sucesso!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao cadastrar endereço: " + ex.Message);
+            }
+        }
+
+        //Adicionando processo 
+        public void AdicionarProcesso(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(conexao))
+                {
+                    conn.Open();
+
+                    string sql = @"INSERT INTO Processo (numero, titulo, id_cliente, area_direito, descricao, valor, fase, status_processo)
+                         VALUES (@numero, @titulo, @idCliente, @area, @descricao, @valor, @fase, @status); SELECT LAST_INSERT_ID();";
+
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.AddWithValue("@numero", numero);
+                        cmd.Parameters.AddWithValue("@titulo", titulo);
+                        cmd.Parameters.AddWithValue("@idCliente", idCliente);
+                        cmd.Parameters.AddWithValue("@area", area);
+                        cmd.Parameters.AddWithValue("@descricao", descricao);
+                        cmd.Parameters.AddWithValue("@valor", valor);
+                        cmd.Parameters.AddWithValue("@fase", fase); 
+                        cmd.Parameters.AddWithValue("@status", status);
+
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Processo criado com sucesso!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao criar processo: " + ex.Message);
+            }
+        }
+
+        //Adicionando prazo
+        public void AdicionarPrazo(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(conexao))
+                {
+                    conn.Open();
+
+                    string sql = @"INSERT INTO Processo (numero, titulo, id_cliente, area_direito, descricao, valor, fase, status_processo)
+                         VALUES (@numero, @titulo, @idCliente, @area, @descricao, @valor, @fase, @status); SELECT LAST_INSERT_ID();";
+
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.AddWithValue("@numero", numero);
+                        cmd.Parameters.AddWithValue("@titulo", titulo);
+                        cmd.Parameters.AddWithValue("@idCliente", idCliente);
+                        cmd.Parameters.AddWithValue("@area", area);
+                        cmd.Parameters.AddWithValue("@descricao", descricao);
+                        cmd.Parameters.AddWithValue("@valor", valor);
+                        cmd.Parameters.AddWithValue("@fase", fase);
+                        cmd.Parameters.AddWithValue("@status", status);
+
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Processo criado com sucesso!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao criar processo: " + ex.Message);
+            }
+        }
+
+        public void remover()
+        {
+          
+        }
+
+        public void atualizar()
+        {
+
+        }
+
+        public void buscar()
+        {
+
+        }
     }
 }
+
+
 
 /*
  
 create database crm_advocacia;
 use crm_advocacia;
 
-create table Usuario (
-
-    id_usuario bigint primary key auto_increment,
-    nome_usuario varchar(100) unique not null,
-    senha varchar(255) not null,
-    nivel_acesso enum('Baixo','Medio','Alto') not null default 'Baixo',
-    ativo bool default true,
-    data_criacao datetime not null default current_timestamp,
-    foto longblob
-
-);
+-- ======================
+-- CLIENTES
+-- ======================
 
 create table Cliente (
 
@@ -57,8 +200,11 @@ create table Endereco (
     cep varchar(15),
     tipo enum('Residencial','Comercial','Outro') default 'Residencial',
     foreign key (id_cliente) references Cliente(id_cliente)
-
 );
+
+-- ======================
+-- PROCESSOS
+-- ======================
 
 create table Processo (
 
@@ -93,8 +239,8 @@ create table Documento (
     id_documento bigint primary key auto_increment,
     id_processo bigint not null,
     titulo varchar(100) not null,
+    caminho_arquivo varchar(255) not null, -- caminho do arquivo no servidor/local
     data_upload datetime default current_timestamp,
-    arquivo longblob,  -- arquivo do documento armazenado no banco
     foreign key (id_processo) references Processo(id_processo)
 
 );
@@ -111,29 +257,56 @@ create table Honorario (
 
 );
 
-create table Advogado (
+-- ======================
+-- COLABORADORES (Advogados + Equipe)
+-- ======================
 
-    id_advogado bigint primary key auto_increment,
+create table Colaborador (
+
+    id_colaborador bigint primary key auto_increment,
     nome varchar(200) not null,
-    oab varchar(30) unique not null,
-    especialidade enum('Trabalhista','Cível','Criminal','Tributário','Família','Outros') not null,
     telefone varchar(30),
     email varchar(100),
     ativo bool default true,
-    foto longblob
+    foto longblob,
+    tipo enum('Advogado','Equipe') not null
+);
+
+-- Subtabela para ADVOGADOS
+
+create table Advogado (
+
+    id_advogado bigint primary key auto_increment,
+    id_colaborador bigint not null unique,
+    oab varchar(30) unique not null,
+    especialidade enum('Trabalhista','Cível','Criminal','Tributário','Família','Outros') not null,
+    foreign key (id_colaborador) references Colaborador(id_colaborador)
+);
+
+-- Subtabela para Equipe administrativa
+
+create table Equipe (
+
+    id_equipe bigint primary key auto_increment,
+    id_colaborador bigint not null unique,
+    cargo enum('Secretário','Estagiário','Financeiro','RH','Outro') not null default 'Outro',
+    foreign key (id_colaborador) references Colaborador(id_colaborador)
 
 );
 
-create table Processo_Advogado (
+-- ======================
+-- RELAÇÃO PROCESSO X COLABORADOR
+-- ======================
+
+create table Processo_Colaborador (
 
     id_processo bigint not null,
-    id_advogado bigint not null,
-    papel enum('Principal','Assistente','Estagiário') default 'Principal',
-    primary key (id_processo, id_advogado),
+    id_colaborador bigint not null,
+    papel enum('Principal','Assistente','Estagiário','Suporte') default 'Principal',
+    primary key (id_processo, id_colaborador),
     foreign key (id_processo) references Processo(id_processo),
-    foreign key (id_advogado) references Advogado(id_advogado)
+    foreign key (id_colaborador) references Colaborador(id_colaborador)
 
 );
-
  
  */
