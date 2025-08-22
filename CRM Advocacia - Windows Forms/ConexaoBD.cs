@@ -8,7 +8,7 @@ namespace CRM_Advocacia___Windows_Forms
 {
     public class ConexaoBD
     {
-        //bdbdbdbdbbdbdbbdbdbbd
+        //bdbdbdbdbbdbdbbdbdbbddadada
 
 
     }
