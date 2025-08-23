@@ -6,13 +6,15 @@ namespace CRM_Advocacia___Windows_Forms
 {
     public class ConexaoBD
     {
-        private string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=;";
+        private string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=Leozin.2168;";
         private MySqlConnection GetConnection()
         {
+
             return new MySqlConnection(conexao);
+
         }
 
-        public void AdicionarCliente(string nome, string cpfCnpj, string tipo, string telefone, string email, string descricao, DateTime data)
+        public void AdicionarCliente(string nome, string cpfCnpj, string tipo, string telefone, string email, string descricao, string data)
         {
             try
             {

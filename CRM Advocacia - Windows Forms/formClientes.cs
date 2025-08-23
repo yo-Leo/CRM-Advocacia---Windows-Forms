@@ -24,7 +24,7 @@ namespace CRM_Advocacia___Windows_Forms
 
             formAdicionarCliente formAdicionarCliente = new formAdicionarCliente();
 
-            formAdicionarCliente.ShowDialog();
+            formAdicionarCliente.Show();
 
         }
     }

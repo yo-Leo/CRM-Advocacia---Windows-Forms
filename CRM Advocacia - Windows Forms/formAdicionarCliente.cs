@@ -13,7 +13,7 @@ namespace CRM_Advocacia___Windows_Forms
     public partial class formAdicionarCliente : Form
     {
 
-
+        ConexaoBD ConexaoBD = new ConexaoBD();
 
         public formAdicionarCliente()
         {
