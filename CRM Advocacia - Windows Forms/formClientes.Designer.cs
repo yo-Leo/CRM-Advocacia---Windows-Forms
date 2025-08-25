@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            cbTipoCliente = new ComboBox();
             txtbNomeCliente = new TextBox();
             btnRemove = new Button();
             btnCriar = new Button();
-            cbTipoCliente = new ComboBox();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -47,6 +47,15 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1082, 51);
             panel1.TabIndex = 0;
+            // 
+            // cbTipoCliente
+            // 
+            cbTipoCliente.FormattingEnabled = true;
+            cbTipoCliente.Items.AddRange(new object[] { "Pessoa Física", "Pessoa Jurídica" });
+            cbTipoCliente.Location = new Point(311, 25);
+            cbTipoCliente.Name = "cbTipoCliente";
+            cbTipoCliente.Size = new Size(121, 23);
+            cbTipoCliente.TabIndex = 3;
             // 
             // txtbNomeCliente
             // 
@@ -69,7 +78,7 @@
             btnRemove.Name = "btnRemove";
             btnRemove.Size = new Size(87, 23);
             btnRemove.TabIndex = 2;
-            btnRemove.Text = "REMOVER";
+            btnRemove.Text = "EDITAR";
             btnRemove.UseVisualStyleBackColor = false;
             // 
             // btnCriar
@@ -86,15 +95,6 @@
             btnCriar.Text = "CRIAR";
             btnCriar.UseVisualStyleBackColor = false;
             btnCriar.Click += btnCriar_Click;
-            // 
-            // cbTipoCliente
-            // 
-            cbTipoCliente.FormattingEnabled = true;
-            cbTipoCliente.Items.AddRange(new object[] { "Pessoa Física", "Pessoa Jurídica" });
-            cbTipoCliente.Location = new Point(311, 25);
-            cbTipoCliente.Name = "cbTipoCliente";
-            cbTipoCliente.Size = new Size(121, 23);
-            cbTipoCliente.TabIndex = 3;
             // 
             // formClientes
             // 
