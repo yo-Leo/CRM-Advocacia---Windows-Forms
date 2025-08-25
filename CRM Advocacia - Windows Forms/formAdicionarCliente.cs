@@ -8,6 +8,7 @@ namespace CRM_Advocacia___Windows_Forms
     {
 
         MetodosBD MetodosBD = new MetodosBD();
+        MetodoCoringa coringa = new MetodoCoringa();
 
         string nome, tipodoc, cpfcnpj, email, telefone, data, descricao, cep, estado, cidade, bairro, logradouro, numero, tiporesiden, compl;
 
@@ -21,7 +22,7 @@ namespace CRM_Advocacia___Windows_Forms
         private void formAdicionarCliente_Load(object sender, EventArgs e)
         {
 
-
+            cbxTipoCliente.SelectedIndex = 0;
 
         }
 
@@ -99,27 +100,74 @@ namespace CRM_Advocacia___Windows_Forms
         private void btnCriar_Click(object sender, EventArgs e)
         {
 
-                nome = tbxNomeCliente.Text;
-                tipodoc = cbxTipoCliente.SelectedItem.ToString();
-                cpfcnpj = tbxDocumento.Text;
-                email = tbxEmail.Text;
-                telefone = tbxTelefone.Text;
-                data = dateContatoCliente.Value.ToString("yyyy-MM-dd");
-                descricao = rtbxDesc.Text;
-                cep = tbxCEP.Text.Replace("-", "").Trim();
+            if (string.IsNullOrWhiteSpace(tbxNomeCliente.Text) ||
+                cbxTipoCliente.SelectedIndex == -1 ||
+                string.IsNullOrWhiteSpace(tbxDocumento.Text.Replace("_", "").Trim()) ||
+                string.IsNullOrWhiteSpace(tbxEmail.Text) ||
+                string.IsNullOrWhiteSpace(tbxTelefone.Text) ||
+                string.IsNullOrWhiteSpace(tbxCEP.Text.Replace("-", "").Replace("_", "").Trim()) ||
+                string.IsNullOrWhiteSpace(tbxEstado.Text) ||
+                string.IsNullOrWhiteSpace(tbxCidade.Text) ||
+                string.IsNullOrWhiteSpace(tbxBairro.Text) ||
+                string.IsNullOrWhiteSpace(tbxLogradouro.Text) ||
+                string.IsNullOrWhiteSpace(tbxNumero.Text) ||
+                cbxTipo.SelectedIndex == -1)
+            {
 
+                MessageBox.Show("Preencha todos os campos antes de continuar!", "Atenção",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
+                return;
 
-              MetodosBD.AdicionarCliente(nome, cpfcnpj, tipodoc, telefone, email, descricao, data);
+            }
 
+            nome = tbxNomeCliente.Text;
+            tipodoc = cbxTipoCliente.SelectedItem.ToString();
+            cpfcnpj = coringa.RemoverMascara(tbxDocumento.Text);
+            email = tbxEmail.Text;
+            telefone = tbxTelefone.Text;
+            data = dateContatoCliente.Value.ToString("yyyy-MM-dd");
+            descricao = rtbxDesc.Text;
+            cep = coringa.RemoverMascara(tbxCEP.Text);
+            estado = tbxEstado.Text;
+            cidade = tbxCidade.Text;
+            bairro = tbxBairro.Text;
+            logradouro = tbxLogradouro.Text;
+            numero = tbxNumero.Text;
+            tiporesiden = cbxTipo.Text;
+            compl = tbxComplemento.Text;
+
+            bool sucesso = MetodosBD.AdicionarClienteComEndereco(
+        nome, cpfcnpj, tipodoc, telefone, email, descricao, data,
+        cep, estado, cidade, bairro, logradouro, numero, tiporesiden, compl);
+
+            if (sucesso)
+            {
+                MessageBox.Show("Cliente e endereço cadastrados com sucesso!", "Sucesso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // ✅ Só limpa os campos se deu certo
                 tbxNomeCliente.Clear();
                 tbxDocumento.Clear();
                 tbxEmail.Clear();
                 tbxTelefone.Clear();
                 rtbxDesc.Clear();
-                cbxTipoCliente.SelectedIndex = -1;
+                cbxTipoCliente.SelectedIndex = 0;
                 dateContatoCliente.Value = DateTime.Now;
-
+                tbxCEP.Clear();
+                tbxEstado.Clear();
+                tbxCidade.Clear();
+                tbxBairro.Clear();
+                tbxLogradouro.Clear();
+                tbxNumero.Clear();
+                cbxTipo.SelectedIndex = -1;
+                tbxComplemento.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Falha ao cadastrar. Nenhum dado foi salvo.", "Erro",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
