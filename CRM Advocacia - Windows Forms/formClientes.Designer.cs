@@ -31,7 +31,6 @@
             panel1 = new Panel();
             cbTipoCliente = new ComboBox();
             txtbNomeCliente = new TextBox();
-            btnRemove = new Button();
             btnCriar = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -40,7 +39,6 @@
             // 
             panel1.Controls.Add(cbTipoCliente);
             panel1.Controls.Add(txtbNomeCliente);
-            panel1.Controls.Add(btnRemove);
             panel1.Controls.Add(btnCriar);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
@@ -66,20 +64,6 @@
             txtbNomeCliente.Size = new Size(266, 21);
             txtbNomeCliente.TabIndex = 1;
             txtbNomeCliente.Tag = "";
-            // 
-            // btnRemove
-            // 
-            btnRemove.BackColor = Color.DarkRed;
-            btnRemove.FlatAppearance.BorderSize = 0;
-            btnRemove.FlatStyle = FlatStyle.Flat;
-            btnRemove.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnRemove.ForeColor = SystemColors.Control;
-            btnRemove.Location = new Point(902, 0);
-            btnRemove.Name = "btnRemove";
-            btnRemove.Size = new Size(87, 23);
-            btnRemove.TabIndex = 2;
-            btnRemove.Text = "EDITAR";
-            btnRemove.UseVisualStyleBackColor = false;
             // 
             // btnCriar
             // 
@@ -114,7 +98,6 @@
 
         private Panel panel1;
         private Button btnCriar;
-        private Button btnRemove;
         private TextBox txtbNomeCliente;
         private ComboBox cbTipoCliente;
     }

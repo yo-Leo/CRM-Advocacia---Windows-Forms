@@ -97,7 +97,7 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
-        private void btnCriar_Click(object sender, EventArgs e)
+        private async void btnCriar_Click(object sender, EventArgs e)
         {
 
             if (string.IsNullOrWhiteSpace(tbxNomeCliente.Text) ||
@@ -114,9 +114,45 @@ namespace CRM_Advocacia___Windows_Forms
                 cbxTipo.SelectedIndex == -1)
             {
 
-                MessageBox.Show("Preencha todos os campos antes de continuar!", "Atenção",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Preencha todos os campos antes de continuar!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
 
+            }
+
+            cep = tbxCEP.Text.Replace("-", "").Trim();
+            if (cep.Length != 8)
+            {
+
+                MessageBox.Show("CEP inválido! Digite um CEP válido com 8 dígitos.", "Atenção",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+
+            }
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+
+                    string url = $"https://viacep.com.br/ws/{cep}/json/";
+                    var response = await client.GetStringAsync(url);
+                    JObject endereco = JObject.Parse(response);
+
+                    if (endereco["erro"] != null)
+                    {
+
+                        MessageBox.Show("CEP não encontrado! Verifique e tente novamente.", "Atenção",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Erro ao validar o CEP: " + ex.Message, "Erro",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
 
             }
@@ -137,16 +173,31 @@ namespace CRM_Advocacia___Windows_Forms
             tiporesiden = cbxTipo.Text;
             compl = tbxComplemento.Text;
 
+            if (cbxTipoCliente.SelectedItem.ToString() == "Pessoa Física" && cpfcnpj.Length != 11)
+            {
+
+                MessageBox.Show("O CPF informado é inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+
+            }
+
+            else if (cbxTipoCliente.SelectedItem.ToString() == "Pessoa Jurídica" && cpfcnpj.Length != 14)
+            {
+
+                MessageBox.Show("O CNPJ informado é inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+
+            }
+
             bool sucesso = MetodosBD.AdicionarClienteComEndereco(
-        nome, cpfcnpj, tipodoc, telefone, email, descricao, data,
-        cep, estado, cidade, bairro, logradouro, numero, tiporesiden, compl);
+            nome, cpfcnpj, tipodoc, telefone, email, descricao, data,
+            cep, estado, cidade, bairro, logradouro, numero, tiporesiden, compl);
 
             if (sucesso)
             {
                 MessageBox.Show("Cliente e endereço cadastrados com sucesso!", "Sucesso",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // ✅ Só limpa os campos se deu certo
                 tbxNomeCliente.Clear();
                 tbxDocumento.Clear();
                 tbxEmail.Clear();
@@ -162,11 +213,15 @@ namespace CRM_Advocacia___Windows_Forms
                 tbxNumero.Clear();
                 cbxTipo.SelectedIndex = -1;
                 tbxComplemento.Clear();
+
             }
+
             else
             {
+
                 MessageBox.Show("Falha ao cadastrar. Nenhum dado foi salvo.", "Erro",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
         }
     }
