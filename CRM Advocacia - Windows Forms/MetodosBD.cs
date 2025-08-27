@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,6 +87,36 @@ namespace CRM_Advocacia___Windows_Forms
                     }
                 }
             }
+        }
+
+        public static DataTable BuscarClientes(string filtro = "", string pesquisa = "")
+        {
+
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Cliente";
+                if (!string.IsNullOrEmpty(filtro) && !string.IsNullOrEmpty(pesquisa))
+                {
+
+                    sql += $" WHERE {filtro} LIKE @pesquisa";
+
+                }
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    if (!string.IsNullOrEmpty(filtro) && !string.IsNullOrEmpty(pesquisa))
+                    {
+                        cmd.Parameters.AddWithValue("@pesquisa", "%" + pesquisa + "%");
+                    }
+                    using (var adapter = new MySqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+
         }
 
         // ================== PROCESSO ==================

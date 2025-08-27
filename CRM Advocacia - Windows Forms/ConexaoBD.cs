@@ -20,10 +20,6 @@ namespace CRM_Advocacia___Windows_Forms
 }
 
 
-
-
-
-
 /*
  
 create database crm_advocacia;
@@ -42,7 +38,8 @@ create table Cliente (
     telefone varchar(30),
     email varchar(100),
     descricao text,
-    contato_em datetime not null default current_timestamp
+    contato_em datetime not null default current_timestamp,
+    ativo bool default true
 
 );
 
