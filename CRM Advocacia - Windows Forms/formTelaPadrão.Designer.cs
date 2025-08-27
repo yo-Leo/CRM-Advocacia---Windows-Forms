@@ -40,10 +40,10 @@
             btnClientes = new Button();
             btnPaginaInici = new Button();
             pnlProfile = new Panel();
+            pnlFormLoader = new Panel();
             labelUserName = new Label();
             picProfile = new PictureBox();
             lbTitulo = new Label();
-            pnlFormLoader = new Panel();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             pnlMenu.SuspendLayout();
             pnlProfile.SuspendLayout();
@@ -210,6 +210,13 @@
             pnlProfile.Size = new Size(186, 150);
             pnlProfile.TabIndex = 2;
             // 
+            // pnlFormLoader
+            // 
+            pnlFormLoader.Location = new Point(186, 35);
+            pnlFormLoader.Name = "pnlFormLoader";
+            pnlFormLoader.Size = new Size(1163, 626);
+            pnlFormLoader.TabIndex = 3;
+            // 
             // labelUserName
             // 
             labelUserName.AutoSize = true;
@@ -235,29 +242,21 @@
             // 
             lbTitulo.AutoSize = true;
             lbTitulo.Font = new Font("Microsoft Sans Serif", 21F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbTitulo.Location = new Point(192, 9);
+            lbTitulo.Location = new Point(186, 0);
             lbTitulo.Name = "lbTitulo";
             lbTitulo.Size = new Size(238, 32);
             lbTitulo.TabIndex = 2;
             lbTitulo.Text = "Pagina Principal";
             // 
-            // pnlFormLoader
-            // 
-            pnlFormLoader.Dock = DockStyle.Bottom;
-            pnlFormLoader.Location = new Point(186, 60);
-            pnlFormLoader.Name = "pnlFormLoader";
-            pnlFormLoader.Size = new Size(1098, 601);
-            pnlFormLoader.TabIndex = 3;
-            // 
             // formTelaPadrão
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1284, 661);
-            Controls.Add(pnlFormLoader);
+            ClientSize = new Size(1350, 661);
             Controls.Add(lbTitulo);
             Controls.Add(pnlMenu);
             Controls.Add(picLogo);
+            Controls.Add(pnlFormLoader);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "formTelaPadrão";

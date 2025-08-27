@@ -6,7 +6,7 @@ namespace CRM_Advocacia___Windows_Forms
 {
     public static class ConexaoBD 
     {
-        private static string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=Leozin.2168;";
+        private static string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=;";
 
         public static MySqlConnection ObterConexao()
         {
@@ -18,10 +18,6 @@ namespace CRM_Advocacia___Windows_Forms
         }
     }
 }
-
-
-
-
 
 
 /*
@@ -42,7 +38,8 @@ create table Cliente (
     telefone varchar(30),
     email varchar(100),
     descricao text,
-    contato_em datetime not null default current_timestamp
+    contato_em datetime not null default current_timestamp,
+    ativo bool default true
 
 );
 

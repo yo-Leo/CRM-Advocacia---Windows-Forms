@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,6 @@ namespace CRM_Advocacia___Windows_Forms
 
                         int idCliente;
 
-                        // 1 - Inserir Cliente
                         string sqlCliente = @"INSERT INTO Cliente 
                         (nome_razao, cpf_cnpj, tipo, telefone, email, descricao, contato_em) 
                         VALUES (@nome, @cpfCnpj, @tipo, @telefone, @email, @descricao, @data);
@@ -47,7 +47,6 @@ namespace CRM_Advocacia___Windows_Forms
 
                         }
 
-                        // 2 - Inserir Endereço
                         string sqlEndereco = @"INSERT INTO Endereco 
                     (id_cliente, cep, estado, cidade, bairro, logradouro, numero, tipo, complemento) 
                     VALUES (@idCliente, @cep, @estado, @cidade, @bairro, @logradouro, @numero, @tipo, @complemento);";
@@ -83,6 +82,56 @@ namespace CRM_Advocacia___Windows_Forms
                             "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
 
+                    }
+                }
+            }
+        }
+
+        public static DataTable BuscarClientes(string filtro = "", string pesquisa = "")
+        {
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                string sql = "SELECT id_cliente, nome_razao, cpf_cnpj, tipo, telefone, email, contato_em FROM Cliente WHERE 1=1";
+
+                if (!string.IsNullOrEmpty(filtro) && filtro != "Todos")
+                {
+
+                    sql += " AND tipo = @filtro";
+
+                }
+
+                if (!string.IsNullOrEmpty(pesquisa))
+                {
+
+                    sql += " AND nome_razao LIKE @pesquisa";
+
+                }
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    if (!string.IsNullOrEmpty(filtro) && filtro != "Todos")
+                    {
+
+                        cmd.Parameters.AddWithValue("@filtro", filtro);
+
+                    }
+
+                    if (!string.IsNullOrEmpty(pesquisa)) 
+                    {
+
+                        cmd.Parameters.AddWithValue("@pesquisa", "%" + pesquisa + "%");
+
+                    }
+
+                    using (var adapter = new MySqlDataAdapter(cmd))
+                    {
+
+                        DataTable tabela = new DataTable();
+                        adapter.Fill(tabela);
+
+
+
+                        return tabela;
                     }
                 }
             }

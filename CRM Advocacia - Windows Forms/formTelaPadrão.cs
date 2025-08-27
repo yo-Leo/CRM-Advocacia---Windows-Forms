@@ -133,7 +133,7 @@ namespace CRM_Advocacia___Windows_Forms
             frmHornorario.Show();
 
         }
-        
+
         private void btnSair_Click(object sender, EventArgs e)
         {
 
@@ -192,5 +192,6 @@ namespace CRM_Advocacia___Windows_Forms
             btnSair.BackColor = Color.DimGray;
 
         }
+
     }
 }
