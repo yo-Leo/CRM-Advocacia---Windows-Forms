@@ -6,7 +6,7 @@ namespace CRM_Advocacia___Windows_Forms
 {
     public static class ConexaoBD 
     {
-        private static string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=Leozin.2168;";
+        private static string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=;";
 
         public static MySqlConnection ObterConexao()
         {

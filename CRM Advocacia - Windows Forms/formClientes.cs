@@ -97,7 +97,7 @@ namespace CRM_Advocacia___Windows_Forms
 
                 // Adiciona os novos elementos em cada card
                 card.Controls.Add(lblNome);
-                card.Controls.Add(lblDoc);
+                card.Controls.Add(lblDoc); //jgjgnbvn
                 card.Controls.Add(lblContato);
                 card.Controls.Add(lblData);
                 card.Controls.Add(btnDetalhes);
