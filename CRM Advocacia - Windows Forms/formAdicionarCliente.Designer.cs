@@ -401,7 +401,7 @@
             tbxCEP.Name = "tbxCEP";
             tbxCEP.Size = new Size(214, 23);
             tbxCEP.TabIndex = 41;
-            tbxCEP.Leave += this.tbxCEP_Leave;
+            tbxCEP.Leave += tbxCEP_Leave;
             // 
             // formAdicionarCliente
             // 
@@ -443,7 +443,7 @@
             Controls.Add(tbxNomeCliente);
             Controls.Add(lbTituloAC);
             Name = "formAdicionarCliente";
-            Text = "formAdicionarCliente";
+            Text = "Adicionar Cliente";
             Load += formAdicionarCliente_Load;
             ResumeLayout(false);
             PerformLayout();

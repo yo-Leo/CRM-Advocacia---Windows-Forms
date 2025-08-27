@@ -40,10 +40,10 @@
             btnClientes = new Button();
             btnPaginaInici = new Button();
             pnlProfile = new Panel();
+            pnlFormLoader = new Panel();
             labelUserName = new Label();
             picProfile = new PictureBox();
             lbTitulo = new Label();
-            pnlFormLoader = new Panel();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             pnlMenu.SuspendLayout();
             pnlProfile.SuspendLayout();
@@ -55,10 +55,9 @@
             picLogo.BackgroundImage = Properties.Resources._48ebd45a_28a5_4555_9ba7_10710817959d;
             picLogo.BackgroundImageLayout = ImageLayout.Zoom;
             picLogo.InitialImage = null;
-            picLogo.Location = new Point(1793, 1095);
-            picLogo.Margin = new Padding(4, 5, 4, 5);
+            picLogo.Location = new Point(1255, 657);
             picLogo.Name = "picLogo";
-            picLogo.Size = new Size(167, 180);
+            picLogo.Size = new Size(117, 108);
             picLogo.TabIndex = 0;
             picLogo.TabStop = false;
             // 
@@ -76,9 +75,8 @@
             pnlMenu.Controls.Add(pnlProfile);
             pnlMenu.Dock = DockStyle.Left;
             pnlMenu.Location = new Point(0, 0);
-            pnlMenu.Margin = new Padding(4, 5, 4, 5);
             pnlMenu.Name = "pnlMenu";
-            pnlMenu.Size = new Size(266, 1050);
+            pnlMenu.Size = new Size(186, 661);
             pnlMenu.TabIndex = 1;
             // 
             // btnSair
@@ -88,10 +86,9 @@
             btnSair.FlatStyle = FlatStyle.Flat;
             btnSair.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSair.ForeColor = Color.White;
-            btnSair.Location = new Point(0, 980);
-            btnSair.Margin = new Padding(4, 5, 4, 5);
+            btnSair.Location = new Point(0, 619);
             btnSair.Name = "btnSair";
-            btnSair.Size = new Size(266, 70);
+            btnSair.Size = new Size(186, 42);
             btnSair.TabIndex = 8;
             btnSair.Text = "Sair";
             btnSair.UseVisualStyleBackColor = true;
@@ -101,10 +98,9 @@
             // pnlNav
             // 
             pnlNav.BackColor = Color.Gainsboro;
-            pnlNav.Location = new Point(4, 320);
-            pnlNav.Margin = new Padding(4, 5, 4, 5);
+            pnlNav.Location = new Point(3, 192);
             pnlNav.Name = "pnlNav";
-            pnlNav.Size = new Size(7, 167);
+            pnlNav.Size = new Size(5, 100);
             pnlNav.TabIndex = 3;
             // 
             // btnHonorarios
@@ -114,10 +110,9 @@
             btnHonorarios.FlatStyle = FlatStyle.Flat;
             btnHonorarios.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnHonorarios.ForeColor = Color.White;
-            btnHonorarios.Location = new Point(0, 600);
-            btnHonorarios.Margin = new Padding(4, 5, 4, 5);
+            btnHonorarios.Location = new Point(0, 360);
             btnHonorarios.Name = "btnHonorarios";
-            btnHonorarios.Size = new Size(266, 70);
+            btnHonorarios.Size = new Size(186, 42);
             btnHonorarios.TabIndex = 7;
             btnHonorarios.Text = "Honorarios";
             btnHonorarios.UseVisualStyleBackColor = true;
@@ -131,10 +126,9 @@
             btnPrazo.FlatStyle = FlatStyle.Flat;
             btnPrazo.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrazo.ForeColor = Color.White;
-            btnPrazo.Location = new Point(0, 530);
-            btnPrazo.Margin = new Padding(4, 5, 4, 5);
+            btnPrazo.Location = new Point(0, 318);
             btnPrazo.Name = "btnPrazo";
-            btnPrazo.Size = new Size(266, 70);
+            btnPrazo.Size = new Size(186, 42);
             btnPrazo.TabIndex = 6;
             btnPrazo.Text = "Prazos";
             btnPrazo.UseVisualStyleBackColor = true;
@@ -148,10 +142,9 @@
             btnProcessos.FlatStyle = FlatStyle.Flat;
             btnProcessos.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnProcessos.ForeColor = Color.White;
-            btnProcessos.Location = new Point(0, 460);
-            btnProcessos.Margin = new Padding(4, 5, 4, 5);
+            btnProcessos.Location = new Point(0, 276);
             btnProcessos.Name = "btnProcessos";
-            btnProcessos.Size = new Size(266, 70);
+            btnProcessos.Size = new Size(186, 42);
             btnProcessos.TabIndex = 5;
             btnProcessos.Text = "Processos";
             btnProcessos.UseVisualStyleBackColor = true;
@@ -165,10 +158,9 @@
             btnEquipe.FlatStyle = FlatStyle.Flat;
             btnEquipe.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEquipe.ForeColor = Color.White;
-            btnEquipe.Location = new Point(0, 390);
-            btnEquipe.Margin = new Padding(4, 5, 4, 5);
+            btnEquipe.Location = new Point(0, 234);
             btnEquipe.Name = "btnEquipe";
-            btnEquipe.Size = new Size(266, 70);
+            btnEquipe.Size = new Size(186, 42);
             btnEquipe.TabIndex = 4;
             btnEquipe.Text = "Equipe";
             btnEquipe.UseVisualStyleBackColor = true;
@@ -182,10 +174,9 @@
             btnClientes.FlatStyle = FlatStyle.Flat;
             btnClientes.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClientes.ForeColor = Color.White;
-            btnClientes.Location = new Point(0, 320);
-            btnClientes.Margin = new Padding(4, 5, 4, 5);
+            btnClientes.Location = new Point(0, 192);
             btnClientes.Name = "btnClientes";
-            btnClientes.Size = new Size(266, 70);
+            btnClientes.Size = new Size(186, 42);
             btnClientes.TabIndex = 3;
             btnClientes.Text = "Clientes";
             btnClientes.UseVisualStyleBackColor = true;
@@ -200,10 +191,9 @@
             btnPaginaInici.FlatStyle = FlatStyle.Flat;
             btnPaginaInici.Font = new Font("Nirmala UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPaginaInici.ForeColor = Color.White;
-            btnPaginaInici.Location = new Point(0, 250);
-            btnPaginaInici.Margin = new Padding(4, 5, 4, 5);
+            btnPaginaInici.Location = new Point(0, 150);
             btnPaginaInici.Name = "btnPaginaInici";
-            btnPaginaInici.Size = new Size(266, 70);
+            btnPaginaInici.Size = new Size(186, 42);
             btnPaginaInici.TabIndex = 2;
             btnPaginaInici.Text = "Pagina Principal";
             btnPaginaInici.UseVisualStyleBackColor = false;
@@ -216,30 +206,34 @@
             pnlProfile.Controls.Add(picProfile);
             pnlProfile.Dock = DockStyle.Top;
             pnlProfile.Location = new Point(0, 0);
-            pnlProfile.Margin = new Padding(4, 5, 4, 5);
             pnlProfile.Name = "pnlProfile";
-            pnlProfile.Size = new Size(266, 250);
+            pnlProfile.Size = new Size(186, 150);
             pnlProfile.TabIndex = 2;
+            // 
+            // pnlFormLoader
+            // 
+            pnlFormLoader.Location = new Point(186, 35);
+            pnlFormLoader.Name = "pnlFormLoader";
+            pnlFormLoader.Size = new Size(1163, 626);
+            pnlFormLoader.TabIndex = 3;
             // 
             // labelUserName
             // 
             labelUserName.AutoSize = true;
             labelUserName.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelUserName.ForeColor = Color.White;
-            labelUserName.Location = new Point(70, 147);
-            labelUserName.Margin = new Padding(4, 0, 4, 0);
+            labelUserName.Location = new Point(49, 88);
             labelUserName.Name = "labelUserName";
-            labelUserName.Size = new Size(119, 25);
+            labelUserName.Size = new Size(85, 16);
             labelUserName.TabIndex = 2;
             labelUserName.Text = "User Name";
             // 
             // picProfile
             // 
             picProfile.Image = (Image)resources.GetObject("picProfile.Image");
-            picProfile.Location = new Point(86, 37);
-            picProfile.Margin = new Padding(4, 5, 4, 5);
+            picProfile.Location = new Point(60, 22);
             picProfile.Name = "picProfile";
-            picProfile.Size = new Size(90, 105);
+            picProfile.Size = new Size(63, 63);
             picProfile.SizeMode = PictureBoxSizeMode.Zoom;
             picProfile.TabIndex = 2;
             picProfile.TabStop = false;
@@ -248,33 +242,22 @@
             // 
             lbTitulo.AutoSize = true;
             lbTitulo.Font = new Font("Microsoft Sans Serif", 21F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbTitulo.Location = new Point(274, 15);
-            lbTitulo.Margin = new Padding(4, 0, 4, 0);
+            lbTitulo.Location = new Point(186, 0);
             lbTitulo.Name = "lbTitulo";
-            lbTitulo.Size = new Size(339, 48);
+            lbTitulo.Size = new Size(238, 32);
             lbTitulo.TabIndex = 2;
             lbTitulo.Text = "Pagina Principal";
             // 
-            // pnlFormLoader
-            // 
-            pnlFormLoader.Dock = DockStyle.Bottom;
-            pnlFormLoader.Location = new Point(266, 68);
-            pnlFormLoader.Margin = new Padding(4, 5, 4, 5);
-            pnlFormLoader.Name = "pnlFormLoader";
-            pnlFormLoader.Size = new Size(1568, 982);
-            pnlFormLoader.TabIndex = 3;
-            // 
             // formTelaPadrão
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1834, 1050);
-            Controls.Add(pnlFormLoader);
+            ClientSize = new Size(1350, 661);
             Controls.Add(lbTitulo);
             Controls.Add(pnlMenu);
             Controls.Add(picLogo);
+            Controls.Add(pnlFormLoader);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             Name = "formTelaPadrão";
             StartPosition = FormStartPosition.CenterScreen;
