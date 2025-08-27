@@ -172,14 +172,6 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
-        // ================== OUTROS MÉTODOS ==================
-        public void Remover(string tabela, string coluna, object valor)
-        {
-
-
-
-        }
-
         public bool AtualizarClienteComEndereco(int idCliente, string nome, string cpfCnpj, string tipo, string telefone, string email,
         string descricao, string data, string cep, string estado, string cidade, string bairro, string logradouro, string numero, string tiporesiden, string compl)
         {
