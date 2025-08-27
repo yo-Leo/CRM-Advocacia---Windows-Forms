@@ -131,11 +131,148 @@ namespace CRM_Advocacia___Windows_Forms
 
         }
 
-        public void Atualizar(string tabela, string colunaAlvo, object novoValor, string colunaFiltro, object valorFiltro)
+        public bool AtualizarClienteComEndereco(int idCliente, string nome, string cpfCnpj, string tipo, string telefone, string email,
+        string descricao, string data, string cep, string estado, string cidade, string bairro, string logradouro, string numero, string tiporesiden, string compl)
         {
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        string sqlClienteSelect = @"SELECT nome_razao, cpf_cnpj, telefone, email, descricao, contato_em 
+                                                FROM Cliente WHERE id_cliente = @idCliente";
 
+                        var currentData = new Dictionary<string, string>();
 
+                        using (var cmdSelect = new MySqlCommand(sqlClienteSelect, conn, transaction))
+                        {
+                            cmdSelect.Parameters.AddWithValue("@idCliente", idCliente);
+                            using (var reader = cmdSelect.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    currentData["nome"] = reader["nome_razao"].ToString();
+                                    currentData["cpf"] = reader["cpf_cnpj"].ToString();
+                                    currentData["telefone"] = reader["telefone"].ToString();
+                                    currentData["email"] = reader["email"].ToString();
+                                    currentData["descricao"] = reader["descricao"].ToString();
+                                }
+                            }
+                        }
 
+                        string sqlCliente = @"UPDATE Cliente
+                                        SET nome_razao = @nome, cpf_cnpj = @cpfCnpj, tipo = @tipo, telefone = @telefone,
+                                        email = @email, descricao = @descricao, contato_em = @data
+                                        WHERE id_cliente = @idCliente;";
+
+                        using (var cmdCliente = new MySqlCommand(sqlCliente, conn, transaction))
+                        {
+                            cmdCliente.Parameters.AddWithValue("@nome", nome);
+                            cmdCliente.Parameters.AddWithValue("@cpfCnpj", cpfCnpj);
+                            cmdCliente.Parameters.AddWithValue("@tipo", tipo);
+                            cmdCliente.Parameters.AddWithValue("@telefone", telefone);
+                            cmdCliente.Parameters.AddWithValue("@email", email);
+                            cmdCliente.Parameters.AddWithValue("@descricao", descricao);
+                            cmdCliente.Parameters.AddWithValue("@data", data);
+                            cmdCliente.Parameters.AddWithValue("@idCliente", idCliente);
+
+                            int rowsAffected = cmdCliente.ExecuteNonQuery();
+
+                            if (rowsAffected == 0)
+                            {
+                                throw new Exception("Cliente não encontrado.");
+                            }
+
+                            var logMessage = new StringBuilder();
+
+                            if (currentData["nome"] != nome)
+                            {
+                                logMessage.AppendLine($"Nome alterado para: {nome}");
+                            }
+
+                            if (currentData["cpf"] != cpfCnpj)
+                            {
+                                logMessage.AppendLine($"CPF alterado para: {cpfCnpj}");
+                            }
+
+                            if (currentData["telefone"] != telefone)
+                            {
+                                logMessage.AppendLine($"Telefone alterado para: {telefone}");
+                            }
+
+                            if (currentData["email"] != email)
+                            {
+                                logMessage.AppendLine($"Email alterado para: {email}");
+                            }
+
+                            if (currentData["descricao"] != descricao)
+                            {
+                                logMessage.AppendLine($"Descrição alterada.");
+                            }
+
+                            if (logMessage.Length > 0)
+                            {
+                                RegistrarLog(conn, transaction, "UPDATE", "Cliente", idCliente, logMessage.ToString());
+                            }
+                        }
+
+                        string sqlEndereco = @"UPDATE Endereco
+                                        SET cep = @cep, estado = @estado, cidade = @cidade, bairro = @bairro, logradouro = @logradouro,
+                                        numero = @numero, tipo = @tipo, complemento = @complemento
+                                        WHERE id_cliente = @idCliente;";
+
+                        using (var cmdEndereco = new MySqlCommand(sqlEndereco, conn, transaction))
+                        {
+                            cmdEndereco.Parameters.AddWithValue("@idCliente", idCliente);
+                            cmdEndereco.Parameters.AddWithValue("@cep", cep);
+                            cmdEndereco.Parameters.AddWithValue("@estado", estado);
+                            cmdEndereco.Parameters.AddWithValue("@cidade", cidade);
+                            cmdEndereco.Parameters.AddWithValue("@bairro", bairro);
+                            cmdEndereco.Parameters.AddWithValue("@logradouro", logradouro);
+                            cmdEndereco.Parameters.AddWithValue("@numero", numero);
+                            cmdEndereco.Parameters.AddWithValue("@tipo", tiporesiden);
+                            cmdEndereco.Parameters.AddWithValue("@complemento", compl);
+
+                            int rowsAffectedEndereco = cmdEndereco.ExecuteNonQuery();
+
+                            if (rowsAffectedEndereco == 0)
+                            {
+                                throw new Exception("Endereço não encontrado para o cliente.");
+                            }
+
+                            RegistrarLog(conn, transaction, "UPDATE", "Endereco", idCliente, "Endereço alterado.");
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("Erro ao atualizar cliente e endereço: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        private void RegistrarLog(MySqlConnection conn, MySqlTransaction transaction, string operacao, string tabelaAfetada, int idRegistro, string descricao)
+        {
+            string sqlLog = @"
+        INSERT INTO LogOperacoes (operacao, tabela_afetada, id_registro, descricao)
+        VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);
+    ";
+
+            using (var cmdLog = new MySqlCommand(sqlLog, conn, transaction))
+            {
+                cmdLog.Parameters.AddWithValue("@operacao", operacao);
+                cmdLog.Parameters.AddWithValue("@tabelaAfetada", tabelaAfetada);
+                cmdLog.Parameters.AddWithValue("@idRegistro", idRegistro);
+                cmdLog.Parameters.AddWithValue("@descricao", descricao);
+
+                cmdLog.ExecuteNonQuery();
+            }
         }
 
         public void Buscar(string tabela, string coluna, object valor)
