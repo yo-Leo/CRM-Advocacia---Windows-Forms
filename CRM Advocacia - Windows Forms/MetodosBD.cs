@@ -137,6 +137,34 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
+        public static DataTable BuscarClienteId(int idCliente)
+        {
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                string sql = @"
+            SELECT c.id_cliente, c.nome_razao, c.cpf_cnpj, c.telefone, c.email, 
+                   c.descricao, c.contato_em,
+                   e.cep, e.logradouro, e.numero, e.bairro, e.cidade, e.estado
+            FROM Cliente c
+            LEFT JOIN Endereco e ON c.id_cliente = e.id_cliente
+            WHERE c.id_cliente = @idCliente;
+        ";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idCliente", idCliente);
+
+                    using (var da = new MySqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+
+
         // ================== PROCESSO ==================
         public void AdicionarPrazo(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
         {
