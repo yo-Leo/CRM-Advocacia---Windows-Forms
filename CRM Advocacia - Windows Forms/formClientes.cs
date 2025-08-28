@@ -79,14 +79,14 @@ namespace CRM_Advocacia___Windows_Forms
                 lblData.Location = new Point(10, 90);
                 lblData.AutoSize = true;
 
-                // 🔹 Botão Detalhes
+                //  Botão Detalhes
                 Button btnDetalhes = new Button();
                 btnDetalhes.Text = "Detalhes";
                 btnDetalhes.Size = new Size(80, 30);
                 btnDetalhes.Location = new Point(10, 120);
                 btnDetalhes.Click += (s, e) => AbrirDetalhesCliente((int)row["id_cliente"]);
 
-                // 🔹 Botão Editar
+                // Botão Editar
                 Button btnEditar = new Button();
                 btnEditar.Text = "Editar";
                 btnEditar.Size = new Size(80, 30);

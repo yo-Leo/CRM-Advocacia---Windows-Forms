@@ -6,7 +6,7 @@ namespace CRM_Advocacia___Windows_Forms
 {
     public static class ConexaoBD 
     {
-        private static string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=;";
+        private static string conexao = "Server=127.0.0.1;Port=3306;Database=crm_advocacia;Uid=root;Pwd=Leozin.2168;";
 
         public static MySqlConnection ObterConexao()
         {
@@ -31,30 +31,30 @@ use crm_advocacia;
 
 create table Cliente (
 
-    id_cliente bigint primary key auto_increment,
+    id_cliente int primary key auto_increment,
     nome_razao varchar(200) not null,
     cpf_cnpj varchar(20) unique not null,
-    tipo enum('Pessoa Física', 'Pessoa Jurídica') not null,
+    tipo enum('Pessoa Física', 'Pessoa Jurídica') not null default "Pessoa Física",
     telefone varchar(30),
     email varchar(100),
     descricao text,
     contato_em datetime not null default current_timestamp,
-    ativo bool default true
+    ativo bool default true 
 
 );
 
 create table Endereco (
 
-    id_endereco bigint primary key auto_increment,
-    id_cliente bigint not null,
-    logradouro varchar(200) not null,
-    numero varchar(20),
-    complemento varchar(100),
-    bairro varchar(100),
-    cidade varchar(100) not null,
+    id_endereco int primary key auto_increment,
+    id_cliente int not null,
+    cep varchar(15) not null,
     estado char(2) not null,
-    cep varchar(15),
+    cidade varchar(100) not null,
+	bairro varchar(100) not null,
+    logradouro varchar(200) not null,
+    numero varchar(20) not null,
     tipo enum('Residencial','Comercial','Outro') default 'Residencial',
+	complemento varchar(100),
     foreign key (id_cliente) references Cliente(id_cliente)
 );
 
@@ -64,10 +64,10 @@ create table Endereco (
 
 create table Processo (
 
-    id_processo bigint primary key auto_increment,
+    id_processo int primary key auto_increment,
     numero varchar(40) unique,  -- número oficial do processo
     titulo varchar(100) not null,
-    id_cliente bigint not null,
+    id_cliente int not null,
     area_direito enum('Trabalhista','Cível','Criminal','Tributário','Família','Outros') not null,
     descricao text,
     valor decimal(15, 2),
@@ -80,8 +80,8 @@ create table Processo (
 
 create table Prazo (
 
-    id_prazo bigint primary key auto_increment,
-    id_processo bigint not null,
+    id_prazo int primary key auto_increment,
+    id_processo int not null,
     tipo enum('Audiência','Protocolo','Prazo Recursal','Outro') not null,
     data_prazo date not null,
     cumprido bool default false,
@@ -92,8 +92,8 @@ create table Prazo (
 
 create table Documento (
 
-    id_documento bigint primary key auto_increment,
-    id_processo bigint not null,
+    id_documento int primary key auto_increment,
+    id_processo int not null,
     titulo varchar(100) not null,
     caminho_arquivo varchar(255) not null, -- caminho do arquivo no servidor/local
     data_upload datetime default current_timestamp,
@@ -103,8 +103,8 @@ create table Documento (
 
 create table Honorario (
 
-    id_honorario bigint primary key auto_increment,
-    id_processo bigint not null,
+    id_honorario int primary key auto_increment,
+    id_processo int not null,
     descricao varchar(200),
     valor decimal(10,2) not null,
     data_emissao date not null,
@@ -119,12 +119,12 @@ create table Honorario (
 
 create table Colaborador (
 
-    id_colaborador bigint primary key auto_increment,
+    id_colaborador int primary key auto_increment,
     nome varchar(200) not null,
     telefone varchar(30),
     email varchar(100),
     ativo bool default true,
-    foto longblob,
+    foto blob,
     tipo enum('Advogado','Equipe') not null
 );
 
@@ -132,22 +132,20 @@ create table Colaborador (
 
 create table Advogado (
 
-    id_advogado bigint primary key auto_increment,
-    id_colaborador bigint not null unique,
+    id_advogado int primary key auto_increment,
+    id_colaborador int not null unique,
     oab varchar(30) unique not null,
     especialidade enum('Trabalhista','Cível','Criminal','Tributário','Família','Outros') not null,
     foreign key (id_colaborador) references Colaborador(id_colaborador)
 );
 
--- Subtabela para Equipe administrativa
+-- Subtabela para EQUIPE administrativa
 
 create table Equipe (
-
-    id_equipe bigint primary key auto_increment,
-    id_colaborador bigint not null unique,
+    id_equipe int primary key auto_increment,
+    id_colaborador int not null unique,
     cargo enum('Secretário','Estagiário','Financeiro','RH','Outro') not null default 'Outro',
     foreign key (id_colaborador) references Colaborador(id_colaborador)
-
 );
 
 -- ======================
@@ -156,8 +154,8 @@ create table Equipe (
 
 create table Processo_Colaborador (
 
-    id_processo bigint not null,
-    id_colaborador bigint not null,
+    id_processo int not null,
+    id_colaborador int not null,
     papel enum('Principal','Assistente','Estagiário','Suporte') default 'Principal',
     primary key (id_processo, id_colaborador),
     foreign key (id_processo) references Processo(id_processo),
