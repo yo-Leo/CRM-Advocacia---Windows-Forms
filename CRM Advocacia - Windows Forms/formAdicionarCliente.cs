@@ -7,8 +7,8 @@ namespace CRM_Advocacia___Windows_Forms
     public partial class formAdicionarCliente : Form
     {
 
-        MetodosBD MetodosBD = new MetodosBD();
-        MetodoCoringa coringa = new MetodoCoringa();
+        MetodosCliente MetodosBD = new MetodosCliente();
+        MetodoGerais coringa = new MetodoGerais();
 
         string nome, tipodoc, cpfcnpj, email, telefone, data, descricao, cep, estado, cidade, bairro, logradouro, numero, tiporesiden, compl;
 

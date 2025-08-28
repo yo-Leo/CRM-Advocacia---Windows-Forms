@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace CRM_Advocacia___Windows_Forms
 {
-    public class MetodoCoringa
+    public class MetodoGerais
     {
 
         public string RemoverMascara(string input)
