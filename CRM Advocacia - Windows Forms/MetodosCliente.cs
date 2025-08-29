@@ -165,8 +165,8 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
-
-        // ================== PROCESSO ==================
+        /*
+        //PROCESSO 
         public void AdicionarPrazo(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
         {
             using (var conn = ConexaoBD.ObterConexao())
@@ -226,6 +226,7 @@ namespace CRM_Advocacia___Windows_Forms
                 }
             }
         }
+        */
 
         //Adicionando o prazo
         public bool AdicionarPrazo(int idProcesso, string tipo, DateTime dataPrazo, string observacao)
@@ -235,8 +236,8 @@ namespace CRM_Advocacia___Windows_Forms
                 try
                 {
                     string sql = @"INSERT INTO Prazo 
-            (id_processo, tipo, data_prazo, observacao) 
-            VALUES (@idProcesso, @tipo, @dataPrazo, @observacao);";
+                    (id_processo, tipo, data_prazo, observacao) 
+                    VALUES (@idProcesso, @tipo, @dataPrazo, @observacao);";
 
                     using (var cmd = new MySqlCommand(sql, conn))
                     {
@@ -409,10 +410,9 @@ namespace CRM_Advocacia___Windows_Forms
         //Adcionando registro no log
         public void RegistrarLog(MySqlConnection conn, MySqlTransaction transaction, string operacao, string tabelaAfetada, int idRegistro, string descricao)
         {
-            string sqlLog = @"
-        INSERT INTO LogOperacoes (operacao, tabela_afetada, id_registro, descricao)
-        VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);
-    ";
+            string sqlLog = @"INSERT INTO LogOperacoes 
+            (operacao, tabela_afetada, id_registro, descricao)
+            VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);";
 
             using (var cmdLog = new MySqlCommand(sqlLog, conn, transaction))
             {
