@@ -11,7 +11,7 @@ namespace CRM_Advocacia___Windows_Forms
 {
     public class MetodosBD
     {
-        // ================== CLIENTE ==================
+        //Adcionar cliente
         public bool AdicionarClienteComEndereco(
         string nome, string cpfCnpj, string tipo, string telefone, string email, string descricao, string data,
         string cep, string estado, string cidade, string bairro, string logradouro, string numero, string tiporesiden, string compl)
@@ -48,8 +48,8 @@ namespace CRM_Advocacia___Windows_Forms
                         }
 
                         string sqlEndereco = @"INSERT INTO Endereco 
-                    (id_cliente, cep, estado, cidade, bairro, logradouro, numero, tipo, complemento) 
-                    VALUES (@idCliente, @cep, @estado, @cidade, @bairro, @logradouro, @numero, @tipo, @complemento);";
+                        (id_cliente, cep, estado, cidade, bairro, logradouro, numero, tipo, complemento) 
+                        VALUES (@idCliente, @cep, @estado, @cidade, @bairro, @logradouro, @numero, @tipo, @complemento);";
 
                         using (var cmdEndereco = new MySqlCommand(sqlEndereco, conn, transaction))
                         {
@@ -67,7 +67,6 @@ namespace CRM_Advocacia___Windows_Forms
                             cmdEndereco.ExecuteNonQuery();
 
                         }
-
 
                         transaction.Commit();
                         return true;
@@ -87,6 +86,7 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
+        //Busca o cliente pelo nome
         public static DataTable BuscarClientes(string filtro = "", string pesquisa = "")
         {
             using (var conn = ConexaoBD.ObterConexao())
@@ -130,13 +130,13 @@ namespace CRM_Advocacia___Windows_Forms
                         adapter.Fill(tabela);
 
 
-
                         return tabela;
                     }
                 }
             }
         }
 
+        //?????????????
         public static DataTable BuscarClienteId(int idCliente)
         {
             using (var conn = ConexaoBD.ObterConexao())
@@ -164,9 +164,41 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
+        //Adiciona advogado 
+        public bool AdicionarAdvogado(string nome, string telefone, string email, string oab, string especialidade)
+        {
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                try
+                {
+                    string sql = @"INSERT INTO Advogado 
+                    (nome, telefone, email, oab, especialidade) 
+                    VALUES (@nome, @telefone, @email, @oab, @especialidade);";
 
-        // ================== PROCESSO ==================
-        public void AdicionarPrazo(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nome", nome);
+                        cmd.Parameters.AddWithValue("@telefone", telefone);
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@oab", oab);
+                        cmd.Parameters.AddWithValue("@especialidade", especialidade);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao cadastrar advogado: " + ex.Message,
+                        "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+        }
+
+        //Adicionando processo 
+        public void AdicionarProcesso(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
         {
             try
             {
@@ -200,6 +232,59 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
+        //Adicionando o prazo
+        public bool AdicionarPrazo(int idProcesso, string tipo, DateTime dataPrazo, string observacao)
+        {
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                try
+                {
+                    string sql = @"INSERT INTO Prazo 
+            (id_processo, tipo, data_prazo, observacao) 
+            VALUES (@idProcesso, @tipo, @dataPrazo, @observacao);";
+
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@idProcesso", idProcesso);
+                        cmd.Parameters.AddWithValue("@tipo", tipo);
+                        cmd.Parameters.AddWithValue("@dataPrazo", dataPrazo);
+                        cmd.Parameters.AddWithValue("@observacao", observacao ?? "");
+
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao cadastrar prazo: " + ex.Message,
+                        "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+        }
+        
+        //Listar documentos 
+        public void ListarDocumentos(int idProcesso, DataGridView grid)
+        {
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                string sql = "SELECT id_documento, titulo, caminho_arquivo, data_upload FROM Documento WHERE id_processo = @id";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", idProcesso);
+
+                    using (var da = new MySqlDataAdapter(cmd))
+                    {
+                        var dt = new System.Data.DataTable();
+                        da.Fill(dt);
+                        grid.DataSource = dt;
+                    }
+                }
+            }
+        }
+
+        //Atualizando dados cadastrais e inserindo modificações realiazadas no log dinâmico 
         public bool AtualizarClienteComEndereco(int idCliente, string nome, string cpfCnpj, string tipo, string telefone, string email,
         string descricao, string data, string cep, string estado, string cidade, string bairro, string logradouro, string numero, string tiporesiden, string compl)
         {
@@ -326,12 +411,12 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
-        private void RegistrarLog(MySqlConnection conn, MySqlTransaction transaction, string operacao, string tabelaAfetada, int idRegistro, string descricao)
+        //Adcionando registro no log
+        public void RegistrarLog(MySqlConnection conn, MySqlTransaction transaction, string operacao, string tabelaAfetada, int idRegistro, string descricao)
         {
-            string sqlLog = @"
-        INSERT INTO LogOperacoes (operacao, tabela_afetada, id_registro, descricao)
-        VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);
-    ";
+            string sqlLog = @"INSERT INTO LogOperacoes 
+            (operacao, tabela_afetada, id_registro, descricao)
+            VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);";
 
             using (var cmdLog = new MySqlCommand(sqlLog, conn, transaction))
             {
@@ -342,13 +427,6 @@ namespace CRM_Advocacia___Windows_Forms
 
                 cmdLog.ExecuteNonQuery();
             }
-        }
-
-        public void Buscar(string tabela, string coluna, object valor)
-        {
-
-
-
         }
 
     }
