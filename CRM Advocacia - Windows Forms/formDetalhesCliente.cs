@@ -127,10 +127,7 @@ namespace CRM_Advocacia___Windows_Forms
         }
 
         // Preenche os dados do cliente
-        public void CarregarDados(string nome, string documento, string telefone, string email,
-                                  string descricao, DateTime contato, string cep,
-                                  string logradouro, string numero, string bairro,
-                                  string cidade, string uf)
+        public void CarregarDados(string nome, string documento, string telefone, string email, string descricao, DateTime contato, string cep, string logradouro, string numero, string bairro, string cidade, string uf)
         {
             lblNomeValor.Text = nome;
             lblDocumentoValor.Text = documento;

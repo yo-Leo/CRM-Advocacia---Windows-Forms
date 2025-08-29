@@ -1,13 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace CRM_Advocacia___Windows_Forms
 {
@@ -25,55 +18,57 @@ namespace CRM_Advocacia___Windows_Forms
 
         private void formEditarCliente_Load(object sender, EventArgs e)
         {
-            // Carregar os dados do cliente pelo ID
-            DataTable cliente = MetodosCliente.BuscarClienteId(idCliente);
 
-            if (cliente.Rows.Count > 0)
-            {
-                DataRow row = cliente.Rows[0];
 
-                tbxNomeCliente.Text = row["nome_razao"].ToString();
-                tbxDocumento.Text = row["cpf_cnpj"].ToString();
-                cbxTipoCliente.SelectedItem = row["tipo"].ToString();
-                tbxEmail.Text = row["email"].ToString();
-                tbxTelefone.Text = row["telefone"].ToString();
-                rtbxDesc.Text = row["descricao"].ToString();
-                dateContatoCliente.Value = Convert.ToDateTime(row["contato_em"]);
-                tbxCEP.Text = row["cep"].ToString();
-                tbxEstado.Text = row["estado"].ToString();
-                tbxCidade.Text = row["cidade"].ToString();
-                tbxBairro.Text = row["bairro"].ToString();
-                tbxLogradouro.Text = row["logradouro"].ToString();
-                tbxNumero.Text = row["numero"].ToString();
-                cbxTipo.SelectedItem = row["tipo"].ToString();
-                tbxComplemento.Text = row.Table.Columns.Contains("complemento") ? row["complemento"].ToString() : "";
-
-                if (row.Table.Columns.Contains("ativa"))
-                {
-
-                    bool estaAtivo = Convert.ToBoolean(row["ativa"]);
-                    cbxAtividade.SelectedItem = estaAtivo ? "Ativo" : "Inativo";
-
-                }
-
-            }
-
-            // Garante que a máscara do documento seja aplicada corretamente
-            cbxTipoCliente_SelectedIndexChanged(null, null);
         }
+
+        public void CarregarDados(string nome, string tipo, string documento, string telefone, string email, string descricao, DateTime contato, string cep, string estado, string cidade, string bairro, string logradouro, string numero, string tiporesid, string compl, string ativo )
+        {
+
+            cbxTipoCliente.SelectedIndexChanged -= cbxTipoCliente_SelectedIndexChanged;
+            tbxCEP.Leave -= tbxCEP_Leave;
+
+            tbxNomeCliente.Text = nome;
+            cbxTipoCliente.SelectedItem = tipo;
+            tbxDocumento.Text = documento;
+            tbxTelefone.Text = telefone;
+            tbxEmail.Text = email;
+            rtbxDesc.Text = descricao;
+            dateContatoCliente.Value = contato;
+            tbxCEP.Text = cep;
+            tbxEstado.Text = estado;
+            tbxCidade.Text = cidade;
+            tbxBairro.Text = bairro;    
+            tbxLogradouro.Text = logradouro;
+            tbxNumero.Text = numero;
+            cbxTipo.SelectedItem = tiporesid;
+            tbxComplemento.Text = compl;
+            cbxAtividade.SelectedItem = ativo;
+
+            cbxTipoCliente.SelectedIndexChanged += cbxTipoCliente_SelectedIndexChanged;
+            tbxCEP.Leave += tbxCEP_Leave;
+
+            cbxTipoCliente_SelectedIndexChanged(cbxTipoCliente, EventArgs.Empty);
+
+        }
+
 
         private void cbxTipoCliente_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             if (cbxTipoCliente.SelectedItem?.ToString() == "Pessoa Física")
             {
+
                 tbxDocumento.Mask = "000.000.000-00";
                 lbDocumento.Text = "CPF:";
+
             }
             else if (cbxTipoCliente.SelectedItem?.ToString() == "Pessoa Jurídica")
             {
                 tbxDocumento.Mask = "00.000.000/0000-00";
                 lbDocumento.Text = "CNPJ:";
             }
+
         }
 
         private async void tbxCEP_Leave(object sender, EventArgs e)
@@ -145,7 +140,7 @@ namespace CRM_Advocacia___Windows_Forms
             }
 
             // Chamada para o método de atualização
-            bool sucesso = cliente.EditarClienteComEndereco(
+            bool sucesso = cliente.AtualizarClienteComEndereco(
                 idCliente, nome, cpfcnpj, tipodoc, telefone, email, descricao, data,
                 cep, estado, cidade, bairro, logradouro, numero, tiporesiden, compl, ativo
             );

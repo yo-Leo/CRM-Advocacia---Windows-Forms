@@ -32,10 +32,9 @@
             // 
             // formProcesso
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1546, 937);
-            Margin = new Padding(4, 5, 4, 5);
+            ClientSize = new Size(1147, 587);
             Name = "formProcesso";
             Text = "formProcesso";
             ResumeLayout(false);

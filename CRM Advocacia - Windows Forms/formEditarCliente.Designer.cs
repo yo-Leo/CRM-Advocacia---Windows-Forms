@@ -267,6 +267,7 @@
             btnSalvar.TabIndex = 56;
             btnSalvar.Text = "SALVAR";
             btnSalvar.UseVisualStyleBackColor = false;
+            btnSalvar.Click += btnSalvar_Click;
             // 
             // dateContatoCliente
             // 

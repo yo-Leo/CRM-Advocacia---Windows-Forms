@@ -16,5 +16,20 @@ namespace CRM_Advocacia___Windows_Forms
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.ShowDialog();
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string selectdoc;
+                selectdoc = dlg.FileName;
+
+                MessageBox.Show(selectdoc);
+            }
+        }
     }
 }

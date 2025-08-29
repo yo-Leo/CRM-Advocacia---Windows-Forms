@@ -28,18 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            panel1 = new Panel();
             SuspendLayout();
+            // 
+            // panel1
+            // 
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1082, 85);
+            panel1.TabIndex = 0;
             // 
             // formEquipe
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1082, 562);
+            Controls.Add(panel1);
             Name = "formEquipe";
             Text = "formEquipe";
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Panel panel1;
     }
 }

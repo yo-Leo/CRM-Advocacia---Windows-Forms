@@ -76,7 +76,7 @@
             // 
             cbxAtividade.DropDownStyle = ComboBoxStyle.DropDownList;
             cbxAtividade.FormattingEnabled = true;
-            cbxAtividade.Items.AddRange(new object[] { "Todos", "Ativo ", "Desativo" });
+            cbxAtividade.Items.AddRange(new object[] { "Todos", "Ativo ", "Inativo" });
             cbxAtividade.Location = new Point(395, 50);
             cbxAtividade.Name = "cbxAtividade";
             cbxAtividade.Size = new Size(192, 23);
