@@ -6,7 +6,7 @@ namespace CRM_Advocacia___Windows_Forms
     public partial class formClientes : Form
     {
 
-        MetodoCoringa coringa = new MetodoCoringa();
+        MetodoGerais coringa = new MetodoGerais();
 
         public formClientes()
         {
@@ -43,7 +43,7 @@ namespace CRM_Advocacia___Windows_Forms
 
             flpClientes.Controls.Clear(); // garantia para limpar o painel
 
-            DataTable clientes = MetodosBD.BuscarClientes(cbxFiltro.Text, tbxPesquisa.Text);
+            DataTable clientes = MetodosCliente.BuscarClientes(cbxFiltro.Text, tbxPesquisa.Text);
 
             foreach (DataRow row in clientes.Rows) // Loop para cada cliente
             {
@@ -91,7 +91,7 @@ namespace CRM_Advocacia___Windows_Forms
                 btnEditar.Text = "Editar";
                 btnEditar.Size = new Size(80, 30);
                 btnEditar.Location = new Point(100, 120);
-                // btnEditar.Click += (s, e) => EditarCliente((int)row["id_cliente"]);
+                btnEditar.Click += (s, e) => AbrirEditarCliente((int)row["id_cliente"]);
 
 
                 // Adiciona os novos elementos em cada card
@@ -110,8 +110,8 @@ namespace CRM_Advocacia___Windows_Forms
 
         private void AbrirDetalhesCliente(int idCliente)
         {
-            // 🔹 Busca os dados do cliente no banco
-            DataTable cliente = MetodosBD.BuscarClienteId(idCliente);
+            // Busca os dados do cliente no banco
+            DataTable cliente = MetodosCliente.BuscarClienteId(idCliente);
 
             if (cliente.Rows.Count == 0)
             {
@@ -121,7 +121,6 @@ namespace CRM_Advocacia___Windows_Forms
 
             DataRow row = cliente.Rows[0];
 
-            // 🔹 Cria o form de detalhes e envia os dados
             formDetalhesCliente detalhes = new formDetalhesCliente();
             detalhes.CarregarDados(
                 row["nome_razao"].ToString(),
@@ -141,6 +140,25 @@ namespace CRM_Advocacia___Windows_Forms
             detalhes.ShowDialog();
         }
 
+        private void AbrirEditarCliente(int idCliente)
+        {
+
+            // Busca os dados do cliente no banco
+            DataTable cliente = MetodosCliente.BuscarClienteId(idCliente);
+
+            if (cliente.Rows.Count == 0)
+            {
+                MessageBox.Show("Cliente não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DataRow row = cliente.Rows[0];
+
+            formEditarCliente editar = new formEditarCliente(idCliente);
+            editar.ShowDialog();
+
+
+        }
 
     }
 }

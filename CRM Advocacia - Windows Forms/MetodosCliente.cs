@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CRM_Advocacia___Windows_Forms
 {
-    public class MetodosBD
+    public class MetodosCliente
     {
         //Adcionar cliente
         public bool AdicionarClienteComEndereco(
@@ -48,8 +48,8 @@ namespace CRM_Advocacia___Windows_Forms
                         }
 
                         string sqlEndereco = @"INSERT INTO Endereco 
-                        (id_cliente, cep, estado, cidade, bairro, logradouro, numero, tipo, complemento) 
-                        VALUES (@idCliente, @cep, @estado, @cidade, @bairro, @logradouro, @numero, @tipo, @complemento);";
+                    (id_cliente, cep, estado, cidade, bairro, logradouro, numero, tipo, complemento) 
+                    VALUES (@idCliente, @cep, @estado, @cidade, @bairro, @logradouro, @numero, @tipo, @complemento);";
 
                         using (var cmdEndereco = new MySqlCommand(sqlEndereco, conn, transaction))
                         {
@@ -130,6 +130,7 @@ namespace CRM_Advocacia___Windows_Forms
                         adapter.Fill(tabela);
 
 
+
                         return tabela;
                     }
                 }
@@ -164,71 +165,65 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
-        //Adiciona advogado 
-        public bool AdicionarAdvogado(string nome, string telefone, string email, string oab, string especialidade)
+
+        // ================== PROCESSO ==================
+        public void AdicionarPrazo(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
         {
             using (var conn = ConexaoBD.ObterConexao())
             {
-                try
+                using (var transaction = conn.BeginTransaction())
                 {
-                    string sql = @"INSERT INTO Advogado 
-                    (nome, telefone, email, oab, especialidade) 
-                    VALUES (@nome, @telefone, @email, @oab, @especialidade);";
-
-                    using (var cmd = new MySqlCommand(sql, conn))
+                    try
                     {
-                        cmd.Parameters.AddWithValue("@nome", nome);
-                        cmd.Parameters.AddWithValue("@telefone", telefone);
-                        cmd.Parameters.AddWithValue("@email", email);
-                        cmd.Parameters.AddWithValue("@oab", oab);
-                        cmd.Parameters.AddWithValue("@especialidade", especialidade);
+                        // Atualizar Cliente
+                        string sqlCliente = @"UPDATE Cliente SET nome_razao = @nome, cpf_cnpj = @cpfCnpj, tipo = @tipo, telefone = @telefone, email = @email, descricao = @descricao, contato_em = @data, ativo = @ativo
+                        WHERE id_cliente = @idCliente;";
 
-                        cmd.ExecuteNonQuery();
+                        using (var cmdCliente = new MySqlCommand(sqlCliente, conn, transaction))
+                        {
+                            cmdCliente.Parameters.AddWithValue("@idCliente", idCliente);
+                            cmdCliente.Parameters.AddWithValue("@nome", nome);
+                            cmdCliente.Parameters.AddWithValue("@cpfCnpj", cpfCnpj);
+                            cmdCliente.Parameters.AddWithValue("@tipo", tipo);
+                            cmdCliente.Parameters.AddWithValue("@telefone", telefone);
+                            cmdCliente.Parameters.AddWithValue("@email", email);
+                            cmdCliente.Parameters.AddWithValue("@descricao", descricao);
+                            cmdCliente.Parameters.AddWithValue("@data", data);
+                            cmdCliente.Parameters.AddWithValue("@ativo", ativo);
+
+                            cmdCliente.ExecuteNonQuery();
+                        }
+
+                        // Atualizar Endereço
+                        string sqlEndereco = @"UPDATE Endereco SET cep = @cep, estado = @estado, cidade = @cidade, bairro = @bairro, logradouro = @logradouro, numero = @numero, tipo = @tipo, complemento = @complemento
+                        WHERE id_cliente = @idCliente;";
+
+                        using (var cmdEndereco = new MySqlCommand(sqlEndereco, conn, transaction))
+                        {
+                            cmdEndereco.Parameters.AddWithValue("@idCliente", idCliente);
+                            cmdEndereco.Parameters.AddWithValue("@cep", cep);
+                            cmdEndereco.Parameters.AddWithValue("@estado", estado);
+                            cmdEndereco.Parameters.AddWithValue("@cidade", cidade);
+                            cmdEndereco.Parameters.AddWithValue("@bairro", bairro);
+                            cmdEndereco.Parameters.AddWithValue("@logradouro", logradouro);
+                            cmdEndereco.Parameters.AddWithValue("@numero", numero);
+                            cmdEndereco.Parameters.AddWithValue("@tipo", tiporesiden);
+                            cmdEndereco.Parameters.AddWithValue("@complemento", compl);
+
+                            cmdEndereco.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        return true;
                     }
-
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao cadastrar advogado: " + ex.Message,
-                        "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
-            }
-        }
-
-        //Adicionando processo 
-        public void AdicionarProcesso(string numero, string titulo, int idCliente, string area, string descricao, decimal valor, string fase, string status)
-        {
-            try
-            {
-                using (var conn = ConexaoBD.ObterConexao())
-                {
-                    conn.Open();
-
-                    string sql = @"INSERT INTO Processo 
-                                  (numero, titulo, id_cliente, area_direito, descricao, valor, fase, status_processo)
-                                  VALUES (@numero, @titulo, @idCliente, @area, @descricao, @valor, @fase, @status);";
-
-                    using (var cmd = new MySqlCommand(sql, conn))
+                    catch (Exception ex)
                     {
-                        cmd.Parameters.AddWithValue("@numero", numero);
-                        cmd.Parameters.AddWithValue("@titulo", titulo);
-                        cmd.Parameters.AddWithValue("@idCliente", idCliente);
-                        cmd.Parameters.AddWithValue("@area", area);
-                        cmd.Parameters.AddWithValue("@descricao", descricao);
-                        cmd.Parameters.AddWithValue("@valor", valor);
-                        cmd.Parameters.AddWithValue("@fase", fase);
-                        cmd.Parameters.AddWithValue("@status", status);
-
-                        cmd.ExecuteNonQuery();
-                        MessageBox.Show("Processo criado com sucesso!");
+                        transaction.Rollback();
+                        MessageBox.Show("Erro ao atualizar cliente e endereço: " + ex.Message,
+                            "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao criar processo: " + ex.Message);
             }
         }
 
@@ -414,12 +409,14 @@ namespace CRM_Advocacia___Windows_Forms
         //Adcionando registro no log
         public void RegistrarLog(MySqlConnection conn, MySqlTransaction transaction, string operacao, string tabelaAfetada, int idRegistro, string descricao)
         {
-            string sqlLog = @"INSERT INTO LogOperacoes 
-            (operacao, tabela_afetada, id_registro, descricao)
-            VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);";
+            string sqlLog = @"
+        INSERT INTO LogOperacoes (operacao, tabela_afetada, id_registro, descricao)
+        VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);
+    ";
 
             using (var cmdLog = new MySqlCommand(sqlLog, conn, transaction))
             {
+
                 cmdLog.Parameters.AddWithValue("@operacao", operacao);
                 cmdLog.Parameters.AddWithValue("@tabelaAfetada", tabelaAfetada);
                 cmdLog.Parameters.AddWithValue("@idRegistro", idRegistro);
@@ -429,5 +426,11 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
+        public void Buscar(string tabela, string coluna, object valor)
+        {
+
+
+
+        }
     }
 }
