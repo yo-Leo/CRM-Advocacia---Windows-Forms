@@ -16,5 +16,27 @@ namespace CRM_Advocacia___Windows_Forms
         {
             InitializeComponent();
         }
+
+        private void btnCriar_Click(object sender, EventArgs e)
+        {
+
+            using (var escolhaForm = new formEscolhaCadastro())
+            {
+                if (escolhaForm.ShowDialog() == DialogResult.OK)
+                {
+                    if (escolhaForm.OpcaoEscolhida == "Advogado")
+                    {
+                        formAdicionarAdvogado formAdv = new formAdicionarAdvogado();
+                        formAdv.ShowDialog();
+                    }
+                    else if (escolhaForm.OpcaoEscolhida == "Equipe")
+                    {
+                        formAdicionarEquipe formEquipe = new formAdicionarEquipe();
+                        formEquipe.ShowDialog();
+                    }
+                }
+            }
+
+        }
     }
 }

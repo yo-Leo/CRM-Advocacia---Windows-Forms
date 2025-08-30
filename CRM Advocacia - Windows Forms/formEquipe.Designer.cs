@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            btnCriar = new Button();
             btnPesquisar = new Button();
+            btnCriar = new Button();
             cbxAtividade = new ComboBox();
+            label1 = new Label();
             label4 = new Label();
+            tbxPesquisa = new TextBox();
             cbxFiltro = new ComboBox();
             label3 = new Label();
-            label1 = new Label();
-            tbxPesquisa = new TextBox();
             pnlEquipe = new Panel();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -54,22 +54,8 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1082, 85);
+            panel1.Size = new Size(1147, 85);
             panel1.TabIndex = 0;
-            // 
-            // btnCriar
-            // 
-            btnCriar.BackColor = Color.DarkGreen;
-            btnCriar.FlatAppearance.BorderSize = 0;
-            btnCriar.FlatStyle = FlatStyle.Flat;
-            btnCriar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCriar.ForeColor = SystemColors.Control;
-            btnCriar.Location = new Point(982, 0);
-            btnCriar.Name = "btnCriar";
-            btnCriar.Size = new Size(100, 33);
-            btnCriar.TabIndex = 2;
-            btnCriar.Text = "CRIAR";
-            btnCriar.UseVisualStyleBackColor = false;
             // 
             // btnPesquisar
             // 
@@ -85,6 +71,21 @@
             btnPesquisar.Text = "🔍︎";
             btnPesquisar.UseVisualStyleBackColor = false;
             // 
+            // btnCriar
+            // 
+            btnCriar.BackColor = Color.DarkGreen;
+            btnCriar.FlatAppearance.BorderSize = 0;
+            btnCriar.FlatStyle = FlatStyle.Flat;
+            btnCriar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCriar.ForeColor = SystemColors.Control;
+            btnCriar.Location = new Point(1047, 0);
+            btnCriar.Name = "btnCriar";
+            btnCriar.Size = new Size(100, 33);
+            btnCriar.TabIndex = 2;
+            btnCriar.Text = "CRIAR";
+            btnCriar.UseVisualStyleBackColor = false;
+            btnCriar.Click += btnCriar_Click;
+            // 
             // cbxAtividade
             // 
             cbxAtividade.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -95,6 +96,16 @@
             cbxAtividade.Size = new Size(192, 23);
             cbxAtividade.TabIndex = 18;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Microsoft Sans Serif", 9F);
+            label1.Location = new Point(3, 31);
+            label1.Name = "label1";
+            label1.Size = new Size(41, 15);
+            label1.TabIndex = 14;
+            label1.Text = "Nome";
+            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -104,6 +115,16 @@
             label4.Size = new Size(141, 15);
             label4.TabIndex = 17;
             label4.Text = "Atividade do Funcionário";
+            // 
+            // tbxPesquisa
+            // 
+            tbxPesquisa.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbxPesquisa.Location = new Point(3, 53);
+            tbxPesquisa.Name = "tbxPesquisa";
+            tbxPesquisa.PlaceholderText = "Digite aqui";
+            tbxPesquisa.Size = new Size(192, 21);
+            tbxPesquisa.TabIndex = 13;
+            tbxPesquisa.Tag = "";
             // 
             // cbxFiltro
             // 
@@ -125,39 +146,19 @@
             label3.TabIndex = 15;
             label3.Text = "Tipo de Funcionário";
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Microsoft Sans Serif", 9F);
-            label1.Location = new Point(3, 31);
-            label1.Name = "label1";
-            label1.Size = new Size(41, 15);
-            label1.TabIndex = 14;
-            label1.Text = "Nome";
-            // 
-            // tbxPesquisa
-            // 
-            tbxPesquisa.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbxPesquisa.Location = new Point(3, 53);
-            tbxPesquisa.Name = "tbxPesquisa";
-            tbxPesquisa.PlaceholderText = "Digite aqui";
-            tbxPesquisa.Size = new Size(192, 21);
-            tbxPesquisa.TabIndex = 13;
-            tbxPesquisa.Tag = "";
-            // 
             // pnlEquipe
             // 
             pnlEquipe.Dock = DockStyle.Fill;
             pnlEquipe.Location = new Point(0, 85);
             pnlEquipe.Name = "pnlEquipe";
-            pnlEquipe.Size = new Size(1082, 477);
+            pnlEquipe.Size = new Size(1147, 502);
             pnlEquipe.TabIndex = 1;
             // 
             // formEquipe
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1082, 562);
+            ClientSize = new Size(1147, 587);
             Controls.Add(pnlEquipe);
             Controls.Add(panel1);
             Name = "formEquipe";

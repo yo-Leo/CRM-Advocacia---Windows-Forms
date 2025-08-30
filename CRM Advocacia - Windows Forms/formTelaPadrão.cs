@@ -72,10 +72,10 @@ namespace CRM_Advocacia___Windows_Forms
             lbTitulo.Text = "Equipe";
 
             this.pnlFormLoader.Controls.Clear();
-            formPaginaInicial frmPaginaInicial = new formPaginaInicial() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
-            frmPaginaInicial.FormBorderStyle = FormBorderStyle.None;
-            this.pnlFormLoader.Controls.Add(frmPaginaInicial);
-            frmPaginaInicial.Show();
+            formEquipe frmEquipe = new formEquipe() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
+            frmEquipe.FormBorderStyle = FormBorderStyle.None;
+            this.pnlFormLoader.Controls.Add(frmEquipe);
+            frmEquipe.Show();
 
 
         }
