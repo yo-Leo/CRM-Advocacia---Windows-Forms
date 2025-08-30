@@ -193,5 +193,14 @@ namespace CRM_Advocacia___Windows_Forms
 
         }
 
+        private void picProfile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                this.picProfile.Image = Image.FromFile(ofd.FileName);
+            }
+        }
     }
 }

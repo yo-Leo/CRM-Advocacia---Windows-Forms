@@ -40,9 +40,9 @@
             btnClientes = new Button();
             btnPaginaInici = new Button();
             pnlProfile = new Panel();
-            pnlFormLoader = new Panel();
             labelUserName = new Label();
             picProfile = new PictureBox();
+            pnlFormLoader = new Panel();
             lbTitulo = new Label();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             pnlMenu.SuspendLayout();
@@ -210,13 +210,6 @@
             pnlProfile.Size = new Size(186, 150);
             pnlProfile.TabIndex = 2;
             // 
-            // pnlFormLoader
-            // 
-            pnlFormLoader.Location = new Point(186, 35);
-            pnlFormLoader.Name = "pnlFormLoader";
-            pnlFormLoader.Size = new Size(1163, 626);
-            pnlFormLoader.TabIndex = 3;
-            // 
             // labelUserName
             // 
             labelUserName.AutoSize = true;
@@ -237,6 +230,14 @@
             picProfile.SizeMode = PictureBoxSizeMode.Zoom;
             picProfile.TabIndex = 2;
             picProfile.TabStop = false;
+            picProfile.Click += picProfile_Click;
+            // 
+            // pnlFormLoader
+            // 
+            pnlFormLoader.Location = new Point(186, 35);
+            pnlFormLoader.Name = "pnlFormLoader";
+            pnlFormLoader.Size = new Size(1163, 626);
+            pnlFormLoader.TabIndex = 3;
             // 
             // lbTitulo
             // 

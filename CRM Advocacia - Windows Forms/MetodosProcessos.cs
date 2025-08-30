@@ -12,7 +12,7 @@ namespace CRM_Advocacia___Windows_Forms
     public class MetodosProcessos
     {
 
-        //Adicionar advogado
+        //Adiciona advogado
         public bool AdicionarAdvogado(string nome, string telefone, string email, string oab, string especialidade)
         {
             using (var conn = ConexaoBD.ObterConexao())
@@ -42,6 +42,119 @@ namespace CRM_Advocacia___Windows_Forms
                         "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
+            }
+        }
+
+        //Atualiza os dados dos advogados
+        public bool AtualizarAdvogado(int idAdvogado, string nome, string oab, string telefone, string email,
+        string descricao, bool ativo)
+        {
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        string sqlSelect = @"SELECT nome, oab, telefone, email, descricao, ativo 
+                                     FROM Advogado WHERE id_advogado = @idAdvogado";
+
+                        var currentData = new Dictionary<string, string>();
+
+                        using (var cmdSelect = new MySqlCommand(sqlSelect, conn, transaction))
+                        {
+                            cmdSelect.Parameters.AddWithValue("@idAdvogado", idAdvogado);
+                            using (var reader = cmdSelect.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    currentData["nome"] = reader["nome"].ToString();
+                                    currentData["oab"] = reader["oab"].ToString();
+                                    currentData["telefone"] = reader["telefone"].ToString();
+                                    currentData["email"] = reader["email"].ToString();
+                                    currentData["descricao"] = reader["descricao"].ToString();
+                                    currentData["ativo"] = reader["ativo"].ToString();
+                                }
+                                else
+                                {
+                                    throw new Exception("Advogado não encontrado.");
+                                }
+                            }
+                        }
+
+                        string sqlUpdate = @"UPDATE Advogado
+                                     SET nome = @nome, oab = @oab, telefone = @telefone,
+                                         email = @email, descricao = @descricao, ativo = @ativo
+                                     WHERE id_advogado = @idAdvogado;";
+
+                        using (var cmdUpdate = new MySqlCommand(sqlUpdate, conn, transaction))
+                        {
+                            cmdUpdate.Parameters.AddWithValue("@nome", nome);
+                            cmdUpdate.Parameters.AddWithValue("@oab", oab);
+                            cmdUpdate.Parameters.AddWithValue("@telefone", telefone);
+                            cmdUpdate.Parameters.AddWithValue("@email", email);
+                            cmdUpdate.Parameters.AddWithValue("@descricao", descricao);
+                            cmdUpdate.Parameters.AddWithValue("@ativo", ativo);
+                            cmdUpdate.Parameters.AddWithValue("@idAdvogado", idAdvogado);
+
+                            int rowsAffected = cmdUpdate.ExecuteNonQuery();
+
+                            if (rowsAffected == 0)
+                                throw new Exception("Nenhum dado foi atualizado no advogado.");
+                        }
+
+                        var logMessage = new StringBuilder();
+
+                        if (currentData["nome"] != nome)
+                            logMessage.AppendLine($"Nome alterado para: {nome}");
+
+                        if (currentData["oab"] != oab)
+                            logMessage.AppendLine($"OAB alterada para: {oab}");
+
+                        if (currentData["telefone"] != telefone)
+                            logMessage.AppendLine($"Telefone alterado para: {telefone}");
+
+                        if (currentData["email"] != email)
+                            logMessage.AppendLine($"Email alterado para: {email}");
+
+                        if (currentData["descricao"] != descricao)
+                            logMessage.AppendLine("Descrição alterada.");
+
+                        if (currentData["ativo"] != ativo.ToString())
+                            logMessage.AppendLine($"Status alterado para: {(ativo ? "Ativo" : "Inativo")}");
+
+                        if (logMessage.Length > 0)
+                            RegistrarLog(conn, transaction, "UPDATE", "Advogado", idAdvogado, logMessage.ToString());
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("Erro ao atualizar advogado: " + ex.Message,
+                                        "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        //Adcionando registro no log
+        public void RegistrarLog(MySqlConnection conn, MySqlTransaction transaction, string operacao, string tabelaAfetada, int idRegistro, string descricao)
+        {
+            string sqlLog = @"INSERT INTO LogOperacoes 
+            (operacao, tabela_afetada, id_registro, descricao)
+            VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);";
+
+            using (var cmdLog = new MySqlCommand(sqlLog, conn, transaction))
+            {
+
+                cmdLog.Parameters.AddWithValue("@operacao", operacao);
+                cmdLog.Parameters.AddWithValue("@tabelaAfetada", tabelaAfetada);
+                cmdLog.Parameters.AddWithValue("@idRegistro", idRegistro);
+                cmdLog.Parameters.AddWithValue("@descricao", descricao);
+
+                cmdLog.ExecuteNonQuery();
             }
         }
 
