@@ -59,6 +59,41 @@ create table Endereco (
 );
 
 -- ======================
+-- COLABORADORES (Advogados + Equipe)
+-- ======================
+
+create table Colaborador (
+
+    id_colaborador int primary key auto_increment,
+    nome varchar(200) not null,
+    telefone varchar(30),
+    email varchar(100),
+    ativo bool default true,
+    foto blob,
+    tipo enum('Advogado','Equipe') not null
+);
+
+-- Subtabela para ADVOGADOS
+
+create table Advogado (
+
+    id_advogado int primary key auto_increment,
+    id_colaborador int not null unique,
+    oab varchar(30) unique not null,
+    especialidade enum('Trabalhista','Cível','Criminal','Tributário','Família','Outros') not null,
+    foreign key (id_colaborador) references Colaborador(id_colaborador)
+);
+
+-- Subtabela para EQUIPE administrativa
+
+create table Equipe (
+    id_equipe int primary key auto_increment,
+    id_colaborador int not null unique,
+    cargo enum('Secretário','Estagiário','Financeiro','RH','Outro') not null default 'Outro',
+    foreign key (id_colaborador) references Colaborador(id_colaborador)
+);
+
+-- ======================
 -- PROCESSOS
 -- ======================
 
@@ -68,13 +103,15 @@ create table Processo (
     numero varchar(40) unique,  -- número oficial do processo
     titulo varchar(100) not null,
     id_cliente int not null,
+    id_advogado int not null,
     area_direito enum('Trabalhista','Cível','Criminal','Tributário','Família','Outros') not null,
     descricao text,
     valor decimal(15, 2),
     fase enum('Conhecimento','Execução','Recursal','Arquivado') not null default 'Conhecimento',
     status_processo enum('Ativo','Suspenso','Encerrado') not null default 'Ativo',
     data_inicio datetime not null default current_timestamp,
-    foreign key (id_cliente) references Cliente(id_cliente)
+    foreign key (id_cliente) references Cliente(id_cliente),
+    foreign key (id_advogado) references Advogado(id_colaborador)
 
 );
 
@@ -113,55 +150,9 @@ create table Honorario (
 
 );
 
--- ======================
--- COLABORADORES (Advogados + Equipe)
--- ======================
-
-create table Colaborador (
-
-    id_colaborador int primary key auto_increment,
-    nome varchar(200) not null,
-    telefone varchar(30),
-    email varchar(100),
-    ativo bool default true,
-    foto blob,
-    tipo enum('Advogado','Equipe') not null
-);
-
--- Subtabela para ADVOGADOS
-
-create table Advogado (
-
-    id_advogado int primary key auto_increment,
-    id_colaborador int not null unique,
-    oab varchar(30) unique not null,
-    especialidade enum('Trabalhista','Cível','Criminal','Tributário','Família','Outros') not null,
-    foreign key (id_colaborador) references Colaborador(id_colaborador)
-);
-
--- Subtabela para EQUIPE administrativa
-
-create table Equipe (
-    id_equipe int primary key auto_increment,
-    id_colaborador int not null unique,
-    cargo enum('Secretário','Estagiário','Financeiro','RH','Outro') not null default 'Outro',
-    foreign key (id_colaborador) references Colaborador(id_colaborador)
-);
-
--- ======================
--- RELAÇÃO PROCESSO X COLABORADOR
--- ======================
-
-create table Processo_Colaborador (
-
-    id_processo int not null,
-    id_colaborador int not null,
-    papel enum('Principal','Assistente','Estagiário','Suporte') default 'Principal',
-    primary key (id_processo, id_colaborador),
-    foreign key (id_processo) references Processo(id_processo),
-    foreign key (id_colaborador) references Colaborador(id_colaborador)
-
-);
+-- ==================
+-- OPERAÇÃO LOGICA
+-- ==================
 
 create table LogOperacoes (
 
@@ -174,5 +165,5 @@ create table LogOperacoes (
 );
 
 -- drop database crm_advocacia;
- 
+
  */

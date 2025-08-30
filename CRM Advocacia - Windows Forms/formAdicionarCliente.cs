@@ -7,7 +7,7 @@ namespace CRM_Advocacia___Windows_Forms
     public partial class formAdicionarCliente : Form
     {
 
-        MetodosCliente MetodosBD = new MetodosCliente();
+        MetodosCliente MetodosCliente = new MetodosCliente();
         MetodoGerais coringa = new MetodoGerais();
 
         string nome, tipodoc, cpfcnpj, email, telefone, data, descricao, cep, estado, cidade, bairro, logradouro, numero, tiporesiden, compl;
@@ -189,7 +189,7 @@ namespace CRM_Advocacia___Windows_Forms
 
             }
 
-            bool sucesso = MetodosBD.AdicionarClienteComEndereco(
+            bool sucesso = MetodosCliente.AdicionarClienteComEndereco(
             nome, cpfcnpj, tipodoc, telefone, email, descricao, data,
             cep, estado, cidade, bairro, logradouro, numero, tiporesiden, compl);
 
@@ -219,8 +219,7 @@ namespace CRM_Advocacia___Windows_Forms
             else
             {
 
-                MessageBox.Show("Falha ao cadastrar. Nenhum dado foi salvo.", "Erro",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Falha ao cadastrar. Nenhum dado foi salvo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         }

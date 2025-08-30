@@ -70,6 +70,7 @@
             btnPesquisar.TabIndex = 19;
             btnPesquisar.Text = "🔍︎";
             btnPesquisar.UseVisualStyleBackColor = false;
+            btnPesquisar.Click += btnPesquisar_Click;
             // 
             // btnCriar
             // 
@@ -148,6 +149,7 @@
             // 
             // pnlEquipe
             // 
+            pnlEquipe.AutoScroll = true;
             pnlEquipe.Dock = DockStyle.Fill;
             pnlEquipe.Location = new Point(0, 85);
             pnlEquipe.Name = "pnlEquipe";
