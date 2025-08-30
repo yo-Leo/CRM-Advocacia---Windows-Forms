@@ -95,7 +95,7 @@ create table Documento (
     id_documento int primary key auto_increment,
     id_processo int not null,
     titulo varchar(100) not null,
-    caminho_arquivo varchar(255) not null, -- caminho do arquivo no servidor/local
+    arquivo blob not null,
     data_upload datetime default current_timestamp,
     foreign key (id_processo) references Processo(id_processo)
 
@@ -162,5 +162,17 @@ create table Processo_Colaborador (
     foreign key (id_colaborador) references Colaborador(id_colaborador)
 
 );
+
+create table LogOperacoes (
+
+	idlog int primary key auto_increment,
+    idRegistro int, 
+    operacao varchar(50) not null,
+    tabela_afetada varchar(100) not null, 
+    descricao varchar(255)
+
+);
+
+-- drop database crm_advocacia;
  
  */

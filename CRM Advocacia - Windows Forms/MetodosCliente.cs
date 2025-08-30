@@ -91,22 +91,18 @@ namespace CRM_Advocacia___Windows_Forms
         {
             using (var conn = ConexaoBD.ObterConexao())
             {
-                // Seleciona todos os dados relevantes
                 string sql = "SELECT id_cliente, nome_razao, cpf_cnpj, tipo, telefone, email, contato_em, ativo FROM Cliente WHERE 1=1";
 
-                // Filtro por tipo
                 if (!string.IsNullOrEmpty(filtroTipo) && filtroTipo != "Todos")
                 {
                     sql += " AND tipo = @filtroTipo";
                 }
 
-                // Filtro por atividade (Ativo / Inativo)
                 if (!string.IsNullOrEmpty(atividade) && atividade != "Todos")
                 {
                     sql += " AND ativo = @ativo";
                 }
 
-                // Filtro por pesquisa no nome
                 if (!string.IsNullOrEmpty(pesquisa))
                 {
                     sql += " AND nome_razao LIKE @pesquisa";
@@ -114,13 +110,11 @@ namespace CRM_Advocacia___Windows_Forms
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
-                    // Adiciona parâmetros somente se necessário
                     if (!string.IsNullOrEmpty(filtroTipo) && filtroTipo != "Todos")
                         cmd.Parameters.AddWithValue("@filtroTipo", filtroTipo);
 
                     if (!string.IsNullOrEmpty(atividade) && atividade != "Todos")
                     {
-                        // Converte "Ativo"/"Inativo" para true/false
                         bool ativoBool = atividade.Equals("Ativo", StringComparison.OrdinalIgnoreCase);
                         cmd.Parameters.AddWithValue("@ativo", ativoBool);
                     }
@@ -170,7 +164,6 @@ namespace CRM_Advocacia___Windows_Forms
                 {
                     try
                     {
-                        // Busca dados atuais do cliente
                         string sqlClienteSelect = @"SELECT nome_razao, cpf_cnpj, telefone, email, descricao, contato_em, ativo 
                                                 FROM Cliente WHERE id_cliente = @idCliente";
 
@@ -282,8 +275,8 @@ namespace CRM_Advocacia___Windows_Forms
         public void RegistrarLog(MySqlConnection conn, MySqlTransaction transaction, string operacao, string tabelaAfetada, int idRegistro, string descricao)
         {
             string sqlLog = @"INSERT INTO LogOperacoes 
-            (operacao, tabela_afetada, id_registro, descricao)
-            VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao);";
+            (operacao, tabela_afetada, idRegistro, descricao)
+            VALUES (@operacao, @tabelaAfetada, @idRegistro, @descricao); SELECT LAST_INSERT_ID();";
 
             using (var cmdLog = new MySqlCommand(sqlLog, conn, transaction))
             {

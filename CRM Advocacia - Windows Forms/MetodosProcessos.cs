@@ -237,7 +237,7 @@ namespace CRM_Advocacia___Windows_Forms
         {
             using (var conn = ConexaoBD.ObterConexao())
             {
-                string sql = "SELECT id_documento, titulo, caminho_arquivo, data_upload FROM Documento WHERE id_processo = @id";
+                string sql = "SELECT id_documento, titulo, arquivo, data_upload FROM Documento WHERE id_processo = @id";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
