@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CRM_Advocacia___Windows_Forms.MetodosProcessos;
+using static CRM_Advocacia___Windows_Forms.MetodoProcesso;
 
 namespace CRM_Advocacia___Windows_Forms
 {
@@ -15,7 +15,9 @@ namespace CRM_Advocacia___Windows_Forms
     {
         public formProcesso()
         {
+
             InitializeComponent();
+
         }
 
         private void btnCriar_Click(object sender, EventArgs e)
@@ -43,7 +45,7 @@ namespace CRM_Advocacia___Windows_Forms
         {
             pnlProcessos.Controls.Clear();
 
-            DataTable processos = MetodosProcesso.BuscarProcessos(filtroTipo, pesquisa, fase, status);
+            DataTable processos = MetodoProcesso.BuscarProcessos(filtroTipo, pesquisa, fase, status);
 
             int espacamento = 10;
             int cardWidth = 300;
@@ -133,15 +135,19 @@ namespace CRM_Advocacia___Windows_Forms
             btnDetalhes.Click += (s, e) =>
             {
                 int idProcesso = Convert.ToInt32(row["id_processo"]);
-                DataRow processo = MetodosProcessos.BuscarProcessoPorId(idProcesso);
+                DataRow processo = MetodoProcesso.BuscarProcessoPorId(idProcesso);
                 if (processo != null)
                 {
+
                     formDetalhesProcesso detalhesForm = new formDetalhesProcesso(processo);
                     detalhesForm.ShowDialog();
+
                 }
                 else
                 {
+
                     MessageBox.Show("Processo não encontrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 }
             };
 
@@ -154,8 +160,10 @@ namespace CRM_Advocacia___Windows_Forms
             };
             btnEditar.Click += (s, e) =>
             {
+
                 int idProcesso = Convert.ToInt32(row["id_processo"]);
                /* AbrirEditarProcesso(idProcesso); // você cria esse método semelhante ao AbrirEditarCliente */
+
             };
 
             // Adiciona todos ao card
@@ -168,6 +176,7 @@ namespace CRM_Advocacia___Windows_Forms
             card.Controls.Add(btnEditar);
 
             return card;
+
         }
 
     }

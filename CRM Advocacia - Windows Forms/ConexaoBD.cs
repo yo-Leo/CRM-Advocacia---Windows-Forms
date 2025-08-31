@@ -132,7 +132,7 @@ create table Documento (
     id_documento int primary key auto_increment,
     id_processo int not null,
     titulo varchar(100) not null,
-    arquivo blob not null,
+    arquivo longblob not null,
     data_upload datetime default current_timestamp,
     foreign key (id_processo) references Processo(id_processo)
 
@@ -165,5 +165,4 @@ create table LogOperacoes (
 );
 
 -- drop database crm_advocacia;
-
  */

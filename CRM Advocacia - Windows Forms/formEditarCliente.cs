@@ -7,7 +7,7 @@ namespace CRM_Advocacia___Windows_Forms
     public partial class formEditarCliente : Form
     {
         private int idCliente;
-        MetodosCliente cliente = new MetodosCliente();
+        MetodoCliente cliente = new MetodoCliente();
         MetodoGerais coringa = new MetodoGerais();
 
         public formEditarCliente(int id)

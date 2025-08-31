@@ -42,7 +42,7 @@ namespace CRM_Advocacia___Windows_Forms
         {
             flpClientes.Controls.Clear();
 
-            DataTable clientes = MetodosCliente.BuscarClientes(cbxFiltro.Text, tbxPesquisa.Text, cbxAtividade.Text);
+            DataTable clientes = MetodoCliente.BuscarClientes(cbxFiltro.Text, tbxPesquisa.Text, cbxAtividade.Text);
 
             foreach (DataRow row in clientes.Rows)
             {
@@ -133,7 +133,7 @@ namespace CRM_Advocacia___Windows_Forms
         private void AbrirDetalhesCliente(int idCliente)
         {
             // Busca os dados do cliente no banco
-            DataTable cliente = MetodosCliente.BuscarClienteId(idCliente);
+            DataTable cliente = MetodoCliente.BuscarClienteId(idCliente);
 
             if (cliente.Rows.Count == 0)
             {
@@ -167,7 +167,7 @@ namespace CRM_Advocacia___Windows_Forms
         private void AbrirEditarCliente(int idCliente)
         {
             // Busca os dados do cliente e endereço no banco
-            DataTable cliente = MetodosCliente.BuscarClienteId(idCliente);
+            DataTable cliente = MetodoCliente.BuscarClienteId(idCliente);
 
             if (cliente.Rows.Count == 0)
             {

@@ -13,7 +13,7 @@ namespace CRM_Advocacia___Windows_Forms
     public partial class formAdicionarEquipe : Form
     {
 
-        MetodosEquipe equipe = new MetodosEquipe();
+        MetodoEquipe equipe = new MetodoEquipe();
         string nome, email, telefone, oab, cargo, caminho;
 
         public formAdicionarEquipe()

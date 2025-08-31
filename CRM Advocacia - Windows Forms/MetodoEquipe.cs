@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CRM_Advocacia___Windows_Forms
 {
-    public class MetodosEquipe
+    public class MetodoEquipe
     {
 
         public bool AdicionarColaboradorAdvog(string nome, string email, string telefone, string tipo, string oab, string especialidade, string caminho)

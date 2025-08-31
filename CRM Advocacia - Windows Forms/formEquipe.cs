@@ -45,7 +45,6 @@ namespace CRM_Advocacia___Windows_Forms
             string atividade = cbxAtividade.SelectedItem?.ToString() ?? "Todos";
             string pesquisa = tbxPesquisa.Text.Trim();
 
-            // Chama o método passando o painel existente
             CarregarEquipe(pnlEquipe, filtroTipo, pesquisa, atividade);
         }
 
@@ -53,7 +52,7 @@ namespace CRM_Advocacia___Windows_Forms
         {
             pnlEquipe.Controls.Clear(); // Limpa os cards existentes
 
-            DataTable colaboradores = MetodosEquipe.BuscarEquipe(filtroTipo, pesquisa, atividade);
+            DataTable colaboradores = MetodoEquipe.BuscarEquipe(filtroTipo, pesquisa, atividade);
 
             int espacamento = 10; // espaçamento entre cards
             int cardWidth = 280;
@@ -168,7 +167,7 @@ namespace CRM_Advocacia___Windows_Forms
             btnDetalhes.Click += (s, e) =>
             {
                 int idColaborador = Convert.ToInt32(row["id_colaborador"]);
-                DataRow colaborador = MetodosEquipe.BuscarColaboradorPorId(idColaborador);
+                DataRow colaborador = MetodoEquipe.BuscarColaboradorPorId(idColaborador);
                 if (colaborador != null)
                 {
                     formDetalhesEquipe detalhesForm = new formDetalhesEquipe(colaborador);

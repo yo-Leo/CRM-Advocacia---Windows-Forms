@@ -13,11 +13,11 @@ namespace CRM_Advocacia___Windows_Forms
 
     public partial class formAdicionarProcesso : Form
     {
-        
-        MetodosProcessos processo = new MetodosProcessos();
-        
-        string numero, titulo, descricao, tipo, data, nomeCliente, nomeAdvogado;
-        decimal valor;
+
+        MetodoProcesso processo = new MetodoProcesso();
+
+        string numero, titulo, descricao, tipo, data, nomeCliente, nomeAdvogado, deschonor;
+        decimal valorproces, valorhonor;
 
         public formAdicionarProcesso()
         {
@@ -32,7 +32,10 @@ namespace CRM_Advocacia___Windows_Forms
                 string.IsNullOrWhiteSpace(rtbxDesc.Text) ||
                 cbxTipoProcesso.SelectedIndex == -1 ||
                 string.IsNullOrWhiteSpace(tbxNomeCliente.Text) ||
-                string.IsNullOrWhiteSpace(tbxNomeAdvogado.Text))
+                string.IsNullOrWhiteSpace(tbxNomeAdvogado.Text) ||
+                string.IsNullOrWhiteSpace(tbxDescHonora.Text) ||
+                numValorProces.Value == 0 ||
+                numValorHonor.Value == 0)
             {
 
                 MessageBox.Show("Por favor, preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -47,17 +50,19 @@ namespace CRM_Advocacia___Windows_Forms
             data = dateInicioProcesso.Value.ToString("yyyy-MM-dd");
             nomeCliente = tbxNomeCliente.Text;
             nomeAdvogado = tbxNomeAdvogado.Text;
-            valor = numValorProces.Value;
+            valorproces = numValorProces.Value;
+            deschonor = tbxDescHonora.Text;
+            valorhonor = numValorHonor.Value;
 
 
-            bool sucesso = processo.AdicionarProcesso(numero, titulo, descricao, tipo, data, nomeCliente, nomeAdvogado, valor);
+            bool sucesso = processo.AdicionarProcesso(numero, titulo, descricao, tipo, data, nomeCliente, nomeAdvogado, valorproces, valorhonor, deschonor);
 
             if (sucesso)
             {
 
                 MessageBox.Show("Processo adicionado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                tbxNumeroProcesso.Clear(); 
+                tbxNumeroProcesso.Clear();
                 tbxTituloProcesso.Clear();
                 rtbxDesc.Clear();
                 cbxTipoProcesso.SelectedIndex = -1;
@@ -74,6 +79,13 @@ namespace CRM_Advocacia___Windows_Forms
                 MessageBox.Show("Erro ao adicionar o processo. Verifique os dados e tente novamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
+
+        }
+
+        private void formAdicionarProcesso_Load(object sender, EventArgs e)
+        {
+
+
 
         }
     }

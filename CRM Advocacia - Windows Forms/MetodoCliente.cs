@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CRM_Advocacia___Windows_Forms
 {
-    public class MetodosCliente
+    public class MetodoCliente
     {
         //Adcionar cliente
         public bool AdicionarClienteComEndereco(
