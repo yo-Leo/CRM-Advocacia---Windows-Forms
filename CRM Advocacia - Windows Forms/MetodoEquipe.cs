@@ -13,19 +13,17 @@ namespace CRM_Advocacia___Windows_Forms
 
         public bool AdicionarColaboradorAdvog(string nome, string email, string telefone, string tipo, string oab, string especialidade, string caminho)
         {
-
             using (var conn = ConexaoBD.ObterConexao())
             {
-
                 using (var transaction = conn.BeginTransaction())
                 {
-
                     try
                     {
-
                         int idcolaborador;
 
-                        string sqlColaborador = "INSERT INTO Colaborador (nome, email, telefone, tipo, foto) VALUES (@nome, @email, @telefone, @tipo, @foto); SELECT LAST_INSERT_ID();";
+                        string sqlColaborador = @"INSERT INTO Colaborador (nome, email, telefone, tipo, foto) 
+                                          VALUES (@nome, @email, @telefone, @tipo, @foto); 
+                                          SELECT LAST_INSERT_ID();";
 
                         using (var cmdColaborador = new MySqlCommand(sqlColaborador, conn, transaction))
                         {
@@ -33,40 +31,38 @@ namespace CRM_Advocacia___Windows_Forms
                             cmdColaborador.Parameters.AddWithValue("@email", email);
                             cmdColaborador.Parameters.AddWithValue("@telefone", telefone);
                             cmdColaborador.Parameters.AddWithValue("@tipo", tipo);
-                            cmdColaborador.Parameters.AddWithValue("@foto", caminho);
+
+                            // Aqui ocorre a conversão da imagem para byte, isso corrige o erro da imagem não ser exibida no forms
+                            byte[] bytesFoto = File.ReadAllBytes(caminho);
+                            cmdColaborador.Parameters.Add("@foto", MySqlDbType.Blob).Value = bytesFoto;
 
                             idcolaborador = Convert.ToInt32(cmdColaborador.ExecuteScalar());
-
                         }
 
-                        string sqlAdvogado = "INSERT INTO Advogado (id_colaborador, oab, especialidade) VALUES (@idcolaborador, @oab, @especialidade); SELECT LAST_INSERT_ID();";
+                        string sqlAdvogado = @"INSERT INTO Advogado (id_colaborador, oab, especialidade) 
+                                       VALUES (@idcolaborador, @oab, @especialidade);";
 
                         using (var cmdAdvogado = new MySqlCommand(sqlAdvogado, conn, transaction))
                         {
-
                             cmdAdvogado.Parameters.AddWithValue("@idcolaborador", idcolaborador);
                             cmdAdvogado.Parameters.AddWithValue("@oab", oab);
                             cmdAdvogado.Parameters.AddWithValue("@especialidade", especialidade);
 
                             cmdAdvogado.ExecuteNonQuery();
-
                         }
 
                         transaction.Commit();
                         return true;
-
                     }
-
                     catch (Exception ex)
                     {
-
                         MessageBox.Show("Erro ao adicionar advogado: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
-
                     }
                 }
             }
         }
+
 
         public bool AdicionarColaboradorEquipe(string nome, string email, string telefone, string tipo, string cargo, string caminho)
         {
@@ -78,8 +74,9 @@ namespace CRM_Advocacia___Windows_Forms
                     {
                         int idcolaborador;
 
-                        // Primeiro insere no Colaborador
-                        string sqlColaborador = @"INSERT INTO Colaborador (nome, email, telefone, tipo, foto) VALUES (@nome, @email, @telefone, @tipo, @foto); SELECT LAST_INSERT_ID();";
+                        string sqlColaborador = @"INSERT INTO Colaborador (nome, email, telefone, tipo, foto) 
+                                          VALUES (@nome, @email, @telefone, @tipo, @foto); 
+                                          SELECT LAST_INSERT_ID();";
 
                         using (var cmdColaborador = new MySqlCommand(sqlColaborador, conn, transaction))
                         {
@@ -87,12 +84,16 @@ namespace CRM_Advocacia___Windows_Forms
                             cmdColaborador.Parameters.AddWithValue("@email", email);
                             cmdColaborador.Parameters.AddWithValue("@telefone", telefone);
                             cmdColaborador.Parameters.AddWithValue("@tipo", tipo);
-                            cmdColaborador.Parameters.AddWithValue("@foto", caminho);
+
+                            // Aqui ocorre a conversão da imagem para byte, isso corrige o erro da imagem não ser exibida no forms
+                            byte[] bytesFoto = File.ReadAllBytes(caminho);
+                            cmdColaborador.Parameters.Add("@foto", MySqlDbType.Blob).Value = bytesFoto;
 
                             idcolaborador = Convert.ToInt32(cmdColaborador.ExecuteScalar());
                         }
 
-                        string sqlEquipe = @"INSERT INTO Equipe (id_colaborador, cargo) VALUES (@idcolaborador, @cargo);";
+                        string sqlEquipe = @"INSERT INTO Equipe (id_colaborador, cargo) 
+                                     VALUES (@idcolaborador, @cargo);";
 
                         using (var cmdEquipe = new MySqlCommand(sqlEquipe, conn, transaction))
                         {
@@ -161,15 +162,9 @@ namespace CRM_Advocacia___Windows_Forms
         {
             using (var conn = ConexaoBD.ObterConexao())
             {
-                string sql = @"
-            SELECT c.id_colaborador, c.nome, c.telefone, c.email, c.ativo, c.foto, c.tipo,
-                   a.oab, a.especialidade,
-                   e.cargo
-            FROM Colaborador c
-            LEFT JOIN Advogado a ON c.id_colaborador = a.id_colaborador
-            LEFT JOIN Equipe e ON c.id_colaborador = e.id_colaborador
-            WHERE c.id_colaborador = @idColaborador
-        ";
+                string sql = @"SELECT c.id_colaborador, c.nome, c.telefone, c.email, c.ativo, c.foto, c.tipo, a.oab, a.especialidade, e.cargo
+                              FROM Colaborador c LEFT JOIN Advogado a ON c.id_colaborador = a.id_colaborador LEFT JOIN Equipe e ON c.id_colaborador = e.id_colaborador
+                              WHERE c.id_colaborador = @idColaborador";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -190,8 +185,7 @@ namespace CRM_Advocacia___Windows_Forms
 
 
         //Atualiza os dados dos advogados
-        public bool AtualizarAdvogado(int idAdvogado, string nome, string oab, string telefone, string email,
-        string descricao, bool ativo)
+        public static bool AtualizarColaboradorAdvogado(int idColaborador, string nome, string email, string telefone, string oab, string especialidade, bool stauts, string caminho)
         {
             using (var conn = ConexaoBD.ObterConexao())
             {
@@ -199,75 +193,47 @@ namespace CRM_Advocacia___Windows_Forms
                 {
                     try
                     {
-                        string sqlSelect = @"SELECT nome, oab, telefone, email, descricao, ativo 
-                                     FROM Advogado WHERE id_advogado = @idAdvogado";
+                        // Atualiza Colaborador
+                        string sqlColaborador = @"UPDATE Colaborador 
+                                          SET nome = @nome, email = @email, telefone = @telefone, foto = @foto, ativo = @ativo
+                                          WHERE id_colaborador = @idColaborador;";
 
-                        var currentData = new Dictionary<string, string>();
-
-                        using (var cmdSelect = new MySqlCommand(sqlSelect, conn, transaction))
+                        using (var cmdColaborador = new MySqlCommand(sqlColaborador, conn, transaction))
                         {
-                            cmdSelect.Parameters.AddWithValue("@idAdvogado", idAdvogado);
-                            using (var reader = cmdSelect.ExecuteReader())
+                            cmdColaborador.Parameters.AddWithValue("@nome", nome);
+                            cmdColaborador.Parameters.AddWithValue("@email", email);
+                            cmdColaborador.Parameters.AddWithValue("@telefone", telefone);
+                            cmdColaborador.Parameters.AddWithValue("@idColaborador", idColaborador);
+                            cmdColaborador.Parameters.AddWithValue("@ativo", stauts);
+
+                            // Se caminho foi fornecido, carrega a nova imagem
+                            if (!string.IsNullOrEmpty(caminho))
                             {
-                                if (reader.Read())
-                                {
-                                    currentData["nome"] = reader["nome"].ToString();
-                                    currentData["oab"] = reader["oab"].ToString();
-                                    currentData["telefone"] = reader["telefone"].ToString();
-                                    currentData["email"] = reader["email"].ToString();
-                                    currentData["descricao"] = reader["descricao"].ToString();
-                                    currentData["ativo"] = reader["ativo"].ToString();
-                                }
-                                else
-                                {
-                                    throw new Exception("Advogado não encontrado.");
-                                }
+                                byte[] bytesFoto = File.ReadAllBytes(caminho);
+                                cmdColaborador.Parameters.Add("@foto", MySqlDbType.Blob).Value = bytesFoto;
                             }
+                            else
+                            {
+                                // mantém a foto anterior
+                                cmdColaborador.Parameters.Add("@foto", MySqlDbType.Blob).Value = DBNull.Value;
+                            }
+
+                            cmdColaborador.ExecuteNonQuery();
                         }
 
-                        string sqlUpdate = @"UPDATE Advogado
-                                     SET nome = @nome, oab = @oab, telefone = @telefone,
-                                         email = @email, descricao = @descricao, ativo = @ativo
-                                     WHERE id_advogado = @idAdvogado;";
+                        // Atualiza Advogado
+                        string sqlAdvogado = @"UPDATE Advogado 
+                                       SET oab = @oab, especialidade = @especialidade 
+                                       WHERE id_colaborador = @idColaborador;";
 
-                        using (var cmdUpdate = new MySqlCommand(sqlUpdate, conn, transaction))
+                        using (var cmdAdvogado = new MySqlCommand(sqlAdvogado, conn, transaction))
                         {
-                            cmdUpdate.Parameters.AddWithValue("@nome", nome);
-                            cmdUpdate.Parameters.AddWithValue("@oab", oab);
-                            cmdUpdate.Parameters.AddWithValue("@telefone", telefone);
-                            cmdUpdate.Parameters.AddWithValue("@email", email);
-                            cmdUpdate.Parameters.AddWithValue("@descricao", descricao);
-                            cmdUpdate.Parameters.AddWithValue("@ativo", ativo);
-                            cmdUpdate.Parameters.AddWithValue("@idAdvogado", idAdvogado);
+                            cmdAdvogado.Parameters.AddWithValue("@idColaborador", idColaborador);
+                            cmdAdvogado.Parameters.AddWithValue("@oab", oab);
+                            cmdAdvogado.Parameters.AddWithValue("@especialidade", especialidade);
 
-                            int rowsAffected = cmdUpdate.ExecuteNonQuery();
-
-                            if (rowsAffected == 0)
-                                throw new Exception("Nenhum dado foi atualizado no advogado.");
+                            cmdAdvogado.ExecuteNonQuery();
                         }
-
-                        var logMessage = new StringBuilder();
-
-                        if (currentData["nome"] != nome)
-                            logMessage.AppendLine($"Nome alterado para: {nome}");
-
-                        if (currentData["oab"] != oab)
-                            logMessage.AppendLine($"OAB alterada para: {oab}");
-
-                        if (currentData["telefone"] != telefone)
-                            logMessage.AppendLine($"Telefone alterado para: {telefone}");
-
-                        if (currentData["email"] != email)
-                            logMessage.AppendLine($"Email alterado para: {email}");
-
-                        if (currentData["descricao"] != descricao)
-                            logMessage.AppendLine("Descrição alterada.");
-
-                        if (currentData["ativo"] != ativo.ToString())
-                            logMessage.AppendLine($"Status alterado para: {(ativo ? "Ativo" : "Inativo")}");
-
-                        if (logMessage.Length > 0)
-                            RegistrarLog(conn, transaction, "UPDATE", "Advogado", idAdvogado, logMessage.ToString());
 
                         transaction.Commit();
                         return true;
@@ -276,7 +242,70 @@ namespace CRM_Advocacia___Windows_Forms
                     {
                         transaction.Rollback();
                         MessageBox.Show("Erro ao atualizar advogado: " + ex.Message,
-                                        "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool AtualizarColaboradorEquipe(int idColaborador, string nome, string email, string telefone, string especialidade, bool stauts, string caminho)
+        {
+            using (var conn = ConexaoBD.ObterConexao())
+            {
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Atualiza Colaborador
+                        string sqlColaborador = @"UPDATE Colaborador 
+                                          SET nome = @nome, email = @email, telefone = @telefone, foto = @foto, ativo = @ativo
+                                          WHERE id_colaborador = @idColaborador;";
+
+                        using (var cmdColaborador = new MySqlCommand(sqlColaborador, conn, transaction))
+                        {
+                            cmdColaborador.Parameters.AddWithValue("@nome", nome);
+                            cmdColaborador.Parameters.AddWithValue("@email", email);
+                            cmdColaborador.Parameters.AddWithValue("@telefone", telefone);
+                            cmdColaborador.Parameters.AddWithValue("@idColaborador", idColaborador);
+                            cmdColaborador.Parameters.AddWithValue("@ativo", stauts);
+
+                            // Se caminho foi fornecido, carrega a nova imagem
+                            if (!string.IsNullOrEmpty(caminho))
+                            {
+                                byte[] bytesFoto = File.ReadAllBytes(caminho);
+                                cmdColaborador.Parameters.Add("@foto", MySqlDbType.Blob).Value = bytesFoto;
+                            }
+                            else
+                            {
+                                // mantém a foto anterior
+                                cmdColaborador.Parameters.Add("@foto", MySqlDbType.Blob).Value = DBNull.Value;
+                            }
+
+                            cmdColaborador.ExecuteNonQuery();
+                        }
+
+                        // Atualiza Advogado
+                        string sqlAdvogado = @"UPDATE Equipe 
+                                       SET cargo = @especialidade 
+                                       WHERE id_colaborador = @idColaborador;";
+
+                        using (var cmdAdvogado = new MySqlCommand(sqlAdvogado, conn, transaction))
+                        {
+                            cmdAdvogado.Parameters.AddWithValue("@idColaborador", idColaborador);
+                            cmdAdvogado.Parameters.AddWithValue("@especialidade", especialidade);
+
+                            cmdAdvogado.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("Erro ao atualizar advogado: " + ex.Message,
+                            "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
                 }

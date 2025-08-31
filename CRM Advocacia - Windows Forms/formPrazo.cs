@@ -90,17 +90,17 @@ namespace CRM_Advocacia___Windows_Forms
                     Text = cumprido ? "Cumprido ✅" : "Pendente ❌",
                     ForeColor = cumprido ? Color.Green : Color.Red,
                     Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                    Location = new Point(card.Width - 150, 35),
+                    Location = new Point(card.Width - 300, 35),
                     AutoSize = true
                 };
 
                 // Botão para marcar como cumprido
                 Button btnCumprido = new Button
                 {
-                    Text = cumprido ? "Cumprido" : "Marcar como Cumprido",
+                    Text = cumprido ? "Cumprido" : "Cumprir",
                     Width = 130,
                     Height = 30,
-                    Location = new Point(card.Width - 150, 60),
+                    Location = new Point(card.Width - 300, 60),
                     Enabled = !cumprido
                 };
 
@@ -116,11 +116,34 @@ namespace CRM_Advocacia___Windows_Forms
                     }
                 };
 
+                // Botão para excluir o prazo
+                Button btnExcluir = new Button
+                {
+                    Text = "Excluir",
+                    Width = 80,
+                    Height = 30,
+                    Location = new Point(card.Width - 150, 60)
+                };
+
+                btnExcluir.Click += (s, e) =>
+                {
+                    var confirm = MessageBox.Show("Deseja realmente excluir este prazo?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (confirm == DialogResult.Yes)
+                    {
+                        if (MetodoPrazo.ExcluirPrazo(idPrazo))
+                        {
+                            pnlPrazo.Controls.Remove(card);
+                            card.Dispose();
+                        }
+                    }
+                };
+
                 card.Controls.Add(lblTipo);
                 card.Controls.Add(lblData);
                 card.Controls.Add(lblObs);
                 card.Controls.Add(lblStatus);
                 card.Controls.Add(btnCumprido);
+                card.Controls.Add(btnExcluir);
 
                 pnlPrazo.Controls.Add(card);
 

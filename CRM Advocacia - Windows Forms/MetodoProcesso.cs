@@ -10,41 +10,60 @@ namespace CRM_Advocacia___Windows_Forms
     public class MetodoProcesso
     {
         //Adicona processo
-        public bool AdicionarProcesso(string numero, string titulo, string descricao, string tipo, string data, string nomecliente, string nomeadv,  decimal valorproces, decimal percHonor, string deschonor)
+        public bool AdicionarProcesso(string numero, string titulo, string descricao, string tipo, string data, string nomecliente, string nomeadv, decimal valorproces, decimal percHonor, string deschonor)
         {
             using (var conn = ConexaoBD.ObterConexao())
             using (var transaction = conn.BeginTransaction())
             {
                 try
                 {
-
+                    // ====== VERIFICAR CLIENTE ATIVO ======
                     int idCliente = 0;
-                    using (var cmdCliente = new MySqlCommand("SELECT id_cliente FROM Cliente WHERE nome_razao = @nome", conn, transaction))
+                    using (var cmdCliente = new MySqlCommand("SELECT id_cliente, ativo FROM Cliente WHERE nome_razao = @nome", conn, transaction))
                     {
                         cmdCliente.Parameters.AddWithValue("@nome", nomecliente);
-                        var result = cmdCliente.ExecuteScalar();
-                        if (result == null)
-                            return false;
-                        idCliente = Convert.ToInt32(result);
+                        using (var reader = cmdCliente.ExecuteReader())
+                        {
+                            if (!reader.Read())
+                                return false;
+
+                            bool clienteAtivo = reader.GetBoolean("ativo");
+                            if (!clienteAtivo)
+                            {
+                                MessageBox.Show("Não é possível cadastrar o processo: Cliente inativo!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return false;
+                            }
+
+                            idCliente = reader.GetInt32("id_cliente");
+                        }
                     }
 
+                    // ====== VERIFICAR ADVOGADO ATIVO ======
                     int idAdvogado = 0;
-                    using (var cmdAdv = new MySqlCommand(
-                        @"SELECT a.id_colaborador FROM Advogado a INNER JOIN Colaborador c ON a.id_colaborador = c.id_colaborador WHERE c.nome = @nomeAdvogado", conn, transaction))
+                    using (var cmdAdv = new MySqlCommand(@"SELECT a.id_colaborador, c.ativo FROM Advogado a INNER JOIN Colaborador c ON a.id_colaborador = c.id_colaborador WHERE c.nome = @nomeAdvogado", conn, transaction))
                     {
-
                         cmdAdv.Parameters.AddWithValue("@nomeAdvogado", nomeadv);
-                        var result = cmdAdv.ExecuteScalar();
-                        if (result == null)
-                            return false;
-                        idAdvogado = Convert.ToInt32(result);
+                        using (var reader = cmdAdv.ExecuteReader())
+                        {
+                            if (!reader.Read())
+                                return false;
 
+                            bool advogadoAtivo = reader.GetBoolean("ativo");
+                            if (!advogadoAtivo)
+                            {
+                                MessageBox.Show("Não é possível cadastrar o processo: Advogado inativo!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return false;
+                            }
+
+                            idAdvogado = reader.GetInt32("id_colaborador");
+                        }
                     }
 
-
+                    // ====== CONTINUA COM A LÓGICA EXISTENTE ======
                     int idProcesso = 0;
-                    string sqlInsertProc = @"INSERT INTO Processo (numero, titulo, descricao, area_direito, id_cliente, id_advogado, valor, data_inicio) VALUES (@numero, @titulo, @descricao, @area, @idCliente, @idAdvogado, @valor, @data);
-                                            SELECT LAST_INSERT_ID();";
+                    string sqlInsertProc = @"INSERT INTO Processo (numero, titulo, descricao, area_direito, id_cliente, id_advogado, valor, data_inicio) 
+                                     VALUES (@numero, @titulo, @descricao, @area, @idCliente, @idAdvogado, @valor, @data);
+                                     SELECT LAST_INSERT_ID();";
 
                     using (var cmdInsertProc = new MySqlCommand(sqlInsertProc, conn, transaction))
                     {
@@ -62,7 +81,8 @@ namespace CRM_Advocacia___Windows_Forms
 
                     decimal valorHonorarioCalculado = (valorproces * percHonor) / 100;
 
-                    string sqlInsertHonor = @"INSERT INTO Honorario (id_processo, descricao, valor, data_emissao, pago) VALUES (@idProcesso, @descricao, @valor, @dataEmissao, @pago);";
+                    string sqlInsertHonor = @"INSERT INTO Honorario (id_processo, descricao, valor, data_emissao, pago) 
+                                      VALUES (@idProcesso, @descricao, @valor, @dataEmissao, @pago);";
 
                     using (var cmdHonor = new MySqlCommand(sqlInsertHonor, conn, transaction))
                     {
@@ -74,7 +94,6 @@ namespace CRM_Advocacia___Windows_Forms
 
                         cmdHonor.ExecuteNonQuery();
                     }
-
 
                     transaction.Commit();
                     return true;
@@ -136,8 +155,6 @@ namespace CRM_Advocacia___Windows_Forms
             return dt;
         }
 
-    
-
         public static DataRow BuscarProcessoPorId(int idProcesso)
         {
             using (var conn = ConexaoBD.ObterConexao())
@@ -155,6 +172,33 @@ namespace CRM_Advocacia___Windows_Forms
                 da.Fill(dt);
 
                 return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            }
+        }
+
+        public static bool AtualizarProcesso(int idProcesso, string fase, string status)
+        {
+            try
+            {
+                using (var conn = ConexaoBD.ObterConexao())
+                {
+                    string sql = @"UPDATE Processo 
+                               SET fase = @fase, status_processo = @status 
+                               WHERE id_processo = @id";
+
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@fase", fase);
+                        cmd.Parameters.AddWithValue("@status", status);
+                        cmd.Parameters.AddWithValue("@id", idProcesso);
+
+                        return cmd.ExecuteNonQuery() > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao atualizar processo: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 

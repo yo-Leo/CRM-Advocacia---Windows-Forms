@@ -69,7 +69,7 @@ create table Colaborador (
     telefone varchar(30),
     email varchar(100),
     ativo bool default true,
-    foto blob,
+    foto longblob,
     tipo enum('Advogado','Equipe') not null
 );
 
@@ -164,5 +164,6 @@ create table LogOperacoes (
 
 );
 
--- drop database crm_advocacia;
+drop database crm_advocacia;
+
  */

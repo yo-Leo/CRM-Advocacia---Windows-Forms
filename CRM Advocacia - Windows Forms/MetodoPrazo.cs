@@ -10,7 +10,7 @@ namespace CRM_Advocacia___Windows_Forms
 {
     public class MetodoPrazo
     {
-
+        //Cria prazo
         public bool CriarPrazo(string numeroProcesso, string tipoPrazo, string dataPrazoStr, string observacao)
         {
             using (var conn = ConexaoBD.ObterConexao())
@@ -64,6 +64,7 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
+        //Busca prazo
         public static DataTable BuscarPrazos(string filtroTipo = "", string data = "", string status = "")
         {
             using (var conn = ConexaoBD.ObterConexao())
@@ -105,7 +106,7 @@ namespace CRM_Advocacia___Windows_Forms
             }
         }
 
-        // Método para marcar prazo como cumprido
+        //Marca prazo como "cumprido"
         public static bool MarcarPrazoCumprido(int idPrazo)
         {
             try
@@ -123,6 +124,27 @@ namespace CRM_Advocacia___Windows_Forms
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao atualizar prazo: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        public static bool ExcluirPrazo(int idPrazo)
+        {
+            try
+            {
+                using (var conn = ConexaoBD.ObterConexao())
+                {
+                    string sql = "DELETE FROM Prazo WHERE id_prazo = @idPrazo";
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@idPrazo", idPrazo);
+                        return cmd.ExecuteNonQuery() > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao excluir prazo: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }

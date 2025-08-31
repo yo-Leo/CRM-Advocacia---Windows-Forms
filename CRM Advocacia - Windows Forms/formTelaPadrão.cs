@@ -142,6 +142,15 @@ namespace CRM_Advocacia___Windows_Forms
             pnlNav.Left = btnSair.Left;
             btnSair.BackColor = Color.Gray;
 
+            DialogResult resultado = MessageBox.Show("Deseja realmente sair do sistema?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.Yes)
+            {
+
+                Application.Exit(); // Fecha o programa
+
+            }
+
         }
 
         private void btnPaginaInici_Leave(object sender, EventArgs e)

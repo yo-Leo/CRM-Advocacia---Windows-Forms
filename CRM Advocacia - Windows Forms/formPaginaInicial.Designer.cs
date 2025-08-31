@@ -34,7 +34,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1082, 562);
+            AutoScroll = true;
+            ClientSize = new Size(1147, 587);
             Name = "formPaginaInicial";
             Text = "formPaginaInicial";
             ResumeLayout(false);

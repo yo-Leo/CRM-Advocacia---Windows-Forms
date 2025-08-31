@@ -151,18 +151,30 @@ namespace CRM_Advocacia___Windows_Forms
                 }
             };
 
-            // Botão Editar
             Button btnEditar = new Button
             {
                 Text = "Editar",
                 Size = new Size(100, 30),
-                Location = new Point(120, height - 40) // Ao lado do botão Detalhes
+                Location = new Point(120, height - 40)
             };
             btnEditar.Click += (s, e) =>
             {
 
                 int idProcesso = Convert.ToInt32(row["id_processo"]);
-               /* AbrirEditarProcesso(idProcesso); // você cria esse método semelhante ao AbrirEditarCliente */
+                DataRow processo = MetodoProcesso.BuscarProcessoPorId(idProcesso);
+                if (processo != null)
+                {
+
+                    formEditarProcesso editar = new formEditarProcesso(processo);
+                    editar.ShowDialog();
+
+                }
+                else
+                {
+
+                    MessageBox.Show("Processo não encontrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
 
             };
 

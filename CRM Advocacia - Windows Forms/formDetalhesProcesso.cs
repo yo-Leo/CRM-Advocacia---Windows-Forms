@@ -24,6 +24,7 @@ namespace CRM_Advocacia___Windows_Forms
         private Label lblStatus;
         private Label lblDataInicio;
         private TextBox txtDescricao;
+        private Button btnAbrirDocs; // novo botão
 
         private DataRow processo;
 
@@ -38,7 +39,7 @@ namespace CRM_Advocacia___Windows_Forms
         private void CriarControles()
         {
             this.Text = "Detalhes do Processo";
-            this.Size = new Size(700, 600);
+            this.Size = new Size(700, 650); // aumentei para caber o botão
             this.BackColor = Color.White;
             this.StartPosition = FormStartPosition.CenterScreen;
 
@@ -62,6 +63,16 @@ namespace CRM_Advocacia___Windows_Forms
                 ScrollBars = ScrollBars.Vertical
             };
 
+            // Botão Documentos
+            btnAbrirDocs = new Button
+            {
+                Text = "Documentos",
+                Size = new Size(120, 35),
+                Location = new Point(20, 545)
+            };
+            btnAbrirDocs.Click += BtnAbrirDocs_Click;
+
+            // Adiciona controles ao Form
             this.Controls.Add(lblTitulo);
             this.Controls.Add(lblCliente);
             this.Controls.Add(lblClienteContato);
@@ -73,30 +84,35 @@ namespace CRM_Advocacia___Windows_Forms
             this.Controls.Add(lblStatus);
             this.Controls.Add(lblDataInicio);
             this.Controls.Add(txtDescricao);
+            this.Controls.Add(btnAbrirDocs);
+        }
+
+        private void BtnAbrirDocs_Click(object sender, EventArgs e)
+        {
+
+            formDocumentos documentos = new formDocumentos(processo);
+            documentos.ShowDialog();
+
         }
 
         private void CarregarDetalhes()
         {
             if (processo == null) return;
 
-            // Cabeçalho
             lblTitulo.Text = $"{processo["numero"]} - {processo["titulo"]}";
             lblTitulo.Font = new Font("Segoe UI", 14, FontStyle.Bold);
 
-            // Cliente
             lblCliente.Text = $"👤 Cliente: {processo["cliente_nome"]} ({processo["cliente_documento"]})";
             lblCliente.Font = new Font("Segoe UI", 11, FontStyle.Regular);
 
             lblClienteContato.Text = $"📞 {processo["cliente_telefone"]} | ✉ {processo["cliente_email"]}";
             lblClienteContato.ForeColor = Color.DimGray;
 
-            // Advogado
             lblAdvogado.Text = $"⚖ Advogado: {processo["advogado_nome"]} - OAB {processo["advogado_oab"]}";
             lblAdvogado.Font = new Font("Segoe UI", 11, FontStyle.Regular);
 
             lblAdvogadoEspecialidade.Text = $"Especialidade: {processo["advogado_especialidade"]}";
 
-            // Processo
             lblArea.Text = $"Área: {processo["area_direito"]}";
             lblValor.Text = $"Valor da Causa: R$ {Convert.ToDecimal(processo["valor"]):N2}";
             lblFase.Text = $"Fase: {processo["fase"]}";

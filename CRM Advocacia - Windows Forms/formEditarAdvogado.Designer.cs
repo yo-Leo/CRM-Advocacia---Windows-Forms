@@ -1,0 +1,300 @@
+﻿namespace CRM_Advocacia___Windows_Forms
+{
+    partial class formEditarAdvogado
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formEditarAdvogado));
+            btnAtualizar = new Button();
+            cbxTipoAdvogado = new ComboBox();
+            label5 = new Label();
+            label4 = new Label();
+            tbxOAB = new TextBox();
+            label3 = new Label();
+            btnFoto = new Button();
+            pbxFoto = new PictureBox();
+            label2 = new Label();
+            lbTelefone = new Label();
+            tbxTelefone = new TextBox();
+            lbEmailCliente = new Label();
+            tbxEmail = new TextBox();
+            label1 = new Label();
+            lbNome = new Label();
+            tbxNome = new TextBox();
+            lbTituloAC = new Label();
+            cbxAtividade = new ComboBox();
+            label6 = new Label();
+            ((System.ComponentModel.ISupportInitialize)pbxFoto).BeginInit();
+            SuspendLayout();
+            // 
+            // btnAtualizar
+            // 
+            btnAtualizar.BackColor = Color.DarkGreen;
+            btnAtualizar.FlatAppearance.BorderSize = 0;
+            btnAtualizar.FlatStyle = FlatStyle.Flat;
+            btnAtualizar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAtualizar.ForeColor = SystemColors.Control;
+            btnAtualizar.Location = new Point(708, 424);
+            btnAtualizar.Name = "btnAtualizar";
+            btnAtualizar.Size = new Size(115, 46);
+            btnAtualizar.TabIndex = 56;
+            btnAtualizar.Text = "ATUALIZAR";
+            btnAtualizar.UseVisualStyleBackColor = false;
+            btnAtualizar.Click += btnAtualizar_Click;
+            // 
+            // cbxTipoAdvogado
+            // 
+            cbxTipoAdvogado.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbxTipoAdvogado.Font = new Font("Microsoft Sans Serif", 9F);
+            cbxTipoAdvogado.FormattingEnabled = true;
+            cbxTipoAdvogado.Items.AddRange(new object[] { "Trabalhista", "Cível", "Criminal", "Tributário", "Família", "Outros" });
+            cbxTipoAdvogado.Location = new Point(331, 154);
+            cbxTipoAdvogado.Name = "cbxTipoAdvogado";
+            cbxTipoAdvogado.Size = new Size(215, 23);
+            cbxTipoAdvogado.TabIndex = 55;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(331, 138);
+            label5.Name = "label5";
+            label5.Size = new Size(85, 15);
+            label5.TabIndex = 54;
+            label5.Text = "Especialidade";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(331, 96);
+            label4.Name = "label4";
+            label4.Size = new Size(130, 15);
+            label4.TabIndex = 53;
+            label4.Text = "Nº de Registro da OAB";
+            // 
+            // tbxOAB
+            // 
+            tbxOAB.Font = new Font("Microsoft Sans Serif", 9F);
+            tbxOAB.Location = new Point(331, 114);
+            tbxOAB.Name = "tbxOAB";
+            tbxOAB.PlaceholderText = "Digite aqui";
+            tbxOAB.Size = new Size(215, 21);
+            tbxOAB.TabIndex = 52;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(331, 67);
+            label3.Name = "label3";
+            label3.Size = new Size(168, 20);
+            label3.TabIndex = 51;
+            label3.Text = "Dados Profissionais";
+            // 
+            // btnFoto
+            // 
+            btnFoto.Location = new Point(117, 316);
+            btnFoto.Name = "btnFoto";
+            btnFoto.Size = new Size(118, 23);
+            btnFoto.TabIndex = 50;
+            btnFoto.Text = "Selecionar imagem";
+            btnFoto.UseVisualStyleBackColor = true;
+            btnFoto.Click += btnFoto_Click;
+            // 
+            // pbxFoto
+            // 
+            pbxFoto.Image = (Image)resources.GetObject("pbxFoto.Image");
+            pbxFoto.Location = new Point(11, 240);
+            pbxFoto.Name = "pbxFoto";
+            pbxFoto.Size = new Size(100, 99);
+            pbxFoto.SizeMode = PictureBoxSizeMode.Zoom;
+            pbxFoto.TabIndex = 49;
+            pbxFoto.TabStop = false;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(12, 222);
+            label2.Name = "label2";
+            label2.Size = new Size(31, 15);
+            label2.TabIndex = 48;
+            label2.Text = "Foto";
+            // 
+            // lbTelefone
+            // 
+            lbTelefone.AutoSize = true;
+            lbTelefone.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbTelefone.Location = new Point(12, 180);
+            lbTelefone.Name = "lbTelefone";
+            lbTelefone.Size = new Size(55, 15);
+            lbTelefone.TabIndex = 47;
+            lbTelefone.Text = "Telefone";
+            // 
+            // tbxTelefone
+            // 
+            tbxTelefone.Font = new Font("Microsoft Sans Serif", 9F);
+            tbxTelefone.Location = new Point(11, 198);
+            tbxTelefone.Name = "tbxTelefone";
+            tbxTelefone.PlaceholderText = "Digite aqui";
+            tbxTelefone.Size = new Size(216, 21);
+            tbxTelefone.TabIndex = 46;
+            // 
+            // lbEmailCliente
+            // 
+            lbEmailCliente.AutoSize = true;
+            lbEmailCliente.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbEmailCliente.Location = new Point(12, 138);
+            lbEmailCliente.Name = "lbEmailCliente";
+            lbEmailCliente.Size = new Size(39, 15);
+            lbEmailCliente.TabIndex = 45;
+            lbEmailCliente.Text = "Email";
+            // 
+            // tbxEmail
+            // 
+            tbxEmail.Font = new Font("Microsoft Sans Serif", 9F);
+            tbxEmail.Location = new Point(12, 156);
+            tbxEmail.Name = "tbxEmail";
+            tbxEmail.PlaceholderText = "Digite aqui";
+            tbxEmail.Size = new Size(216, 21);
+            tbxEmail.TabIndex = 44;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(12, 67);
+            label1.Name = "label1";
+            label1.Size = new Size(138, 20);
+            label1.TabIndex = 43;
+            label1.Text = "Dados Pessoais";
+            // 
+            // lbNome
+            // 
+            lbNome.AutoSize = true;
+            lbNome.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbNome.Location = new Point(12, 96);
+            lbNome.Name = "lbNome";
+            lbNome.Size = new Size(115, 15);
+            lbNome.TabIndex = 42;
+            lbNome.Text = "Nome do Advogado";
+            // 
+            // tbxNome
+            // 
+            tbxNome.Font = new Font("Microsoft Sans Serif", 9F);
+            tbxNome.Location = new Point(12, 114);
+            tbxNome.Name = "tbxNome";
+            tbxNome.PlaceholderText = "Digite aqui";
+            tbxNome.Size = new Size(215, 21);
+            tbxNome.TabIndex = 41;
+            // 
+            // lbTituloAC
+            // 
+            lbTituloAC.AutoSize = true;
+            lbTituloAC.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTituloAC.Location = new Point(287, 6);
+            lbTituloAC.Name = "lbTituloAC";
+            lbTituloAC.Size = new Size(191, 24);
+            lbTituloAC.TabIndex = 40;
+            lbTituloAC.Text = "Atualizar Advogado";
+            // 
+            // cbxAtividade
+            // 
+            cbxAtividade.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbxAtividade.Font = new Font("Microsoft Sans Serif", 9F);
+            cbxAtividade.FormattingEnabled = true;
+            cbxAtividade.Items.AddRange(new object[] { "Ativo", "Inativo" });
+            cbxAtividade.Location = new Point(331, 196);
+            cbxAtividade.Name = "cbxAtividade";
+            cbxAtividade.Size = new Size(215, 23);
+            cbxAtividade.TabIndex = 58;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(331, 180);
+            label6.Name = "label6";
+            label6.Size = new Size(56, 15);
+            label6.TabIndex = 57;
+            label6.Text = "Atividade";
+            // 
+            // formEditarAdvogado
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(835, 476);
+            Controls.Add(cbxAtividade);
+            Controls.Add(label6);
+            Controls.Add(btnAtualizar);
+            Controls.Add(cbxTipoAdvogado);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(tbxOAB);
+            Controls.Add(label3);
+            Controls.Add(btnFoto);
+            Controls.Add(pbxFoto);
+            Controls.Add(label2);
+            Controls.Add(lbTelefone);
+            Controls.Add(tbxTelefone);
+            Controls.Add(lbEmailCliente);
+            Controls.Add(tbxEmail);
+            Controls.Add(label1);
+            Controls.Add(lbNome);
+            Controls.Add(tbxNome);
+            Controls.Add(lbTituloAC);
+            Name = "formEditarAdvogado";
+            Text = "formEditarAdvogado";
+            ((System.ComponentModel.ISupportInitialize)pbxFoto).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private Button btnAtualizar;
+        private ComboBox cbxTipoAdvogado;
+        private Label label5;
+        private Label label4;
+        private TextBox tbxOAB;
+        private Label label3;
+        private Button btnFoto;
+        public PictureBox pbxFoto;
+        private Label label2;
+        private Label lbTelefone;
+        private TextBox tbxTelefone;
+        private Label lbEmailCliente;
+        private TextBox tbxEmail;
+        private Label label1;
+        private Label lbNome;
+        private TextBox tbxNome;
+        private Label lbTituloAC;
+        private ComboBox cbxAtividade;
+        private Label label6;
+    }
+}

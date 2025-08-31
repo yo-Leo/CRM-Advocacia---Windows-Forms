@@ -16,6 +16,7 @@ namespace CRM_Advocacia___Windows_Forms
     public partial class formDetalhesEquipe : Form
     {
 
+
         private Label lblTitulo;
         private Label lblNome;
         private Label lblTipo;
@@ -23,7 +24,7 @@ namespace CRM_Advocacia___Windows_Forms
         private Label lblEmail;
         private Label lblStatus;
         private Label lblExtra;
-        private PictureBox pictureBoxFoto;
+        public PictureBox pictureBoxFoto;
         private Button btnFechar;
 
         public formDetalhesEquipe(DataRow colaborador)
@@ -125,23 +126,25 @@ namespace CRM_Advocacia___Windows_Forms
                 lblExtra.Text = $"Cargo: {row["cargo"]}";
             }
 
-            if (row["foto"] != DBNull.Value)
+            try
             {
-                try
+                if (row["foto"] != DBNull.Value)
                 {
-                    byte[] imgBytes = row["foto"] as byte[];
-                    if (imgBytes != null && imgBytes.Length > 0)
+                    byte[] bytesFoto = (byte[])row["foto"];
+                    using (MemoryStream ms = new MemoryStream(bytesFoto))
                     {
-                        using (MemoryStream ms = new MemoryStream(imgBytes))
-                        {
-                            pictureBoxFoto.Image = Image.FromStream(ms);
-                        }
+                        pictureBoxFoto.Image = Image.FromStream(ms);
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("Erro ao carregar a imagem: " + ex.Message);
+                    pictureBoxFoto.Image = null; // Limpa se não tiver foto
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar a imagem: " + ex.Message);
+                pictureBoxFoto.Image = null;
             }
         }
     }

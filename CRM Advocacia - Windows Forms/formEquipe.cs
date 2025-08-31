@@ -168,14 +168,19 @@ namespace CRM_Advocacia___Windows_Forms
             {
                 int idColaborador = Convert.ToInt32(row["id_colaborador"]);
                 DataRow colaborador = MetodoEquipe.BuscarColaboradorPorId(idColaborador);
+
                 if (colaborador != null)
                 {
-                    formDetalhesEquipe detalhesForm = new formDetalhesEquipe(colaborador);
-                    detalhesForm.ShowDialog();
+
+                    formDetalhesEquipe detalhes = new formDetalhesEquipe(colaborador);
+                    detalhes.ShowDialog();
+
                 }
                 else
                 {
+
                     MessageBox.Show("Colaborador não encontrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 }
             };
 
@@ -185,10 +190,37 @@ namespace CRM_Advocacia___Windows_Forms
                 Size = new Size(80, 30),
                 Location = new Point(100, 110)
             };
+
             btnEditar.Click += (s, e) =>
             {
                 int idColaborador = Convert.ToInt32(row["id_colaborador"]);
-                /*AbrirEditarColaborador(idColaborador); */
+                DataRow colaborador = MetodoEquipe.BuscarColaboradorPorId(idColaborador);
+
+                if (colaborador != null)
+                {
+                    string tipo = colaborador["tipo"].ToString();
+
+                    if (tipo == "Advogado")
+                    {
+
+                        formEditarAdvogado editarAdv = new formEditarAdvogado(colaborador);
+                        editarAdv.ShowDialog();
+
+                    }
+                    else if (tipo == "Equipe")
+                    {
+                        formEditarEquipe editarEqp = new formEditarEquipe(colaborador);
+                        editarEqp.ShowDialog();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Tipo de colaborador inválido!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Colaborador não encontrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             };
 
             card.Controls.Add(lblNome);

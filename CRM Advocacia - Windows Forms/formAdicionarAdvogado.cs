@@ -90,8 +90,6 @@ namespace CRM_Advocacia___Windows_Forms
                 MessageBox.Show("Falha ao adicionar advogado. Verifique os dados e tente novamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
-
-
         }
 
     }

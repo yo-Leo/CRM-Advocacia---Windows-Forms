@@ -262,7 +262,7 @@
         private Label lbEmailCliente;
         private TextBox tbxEmail;
         private Label label2;
-        private PictureBox pbxFoto;
+        public PictureBox pbxFoto;
         private Button btnFoto;
         private Label label3;
         private Label label4;
